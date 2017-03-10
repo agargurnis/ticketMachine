@@ -1,0 +1,427 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F561E730F3B000E8803 /* AppDelegate.swift */; };
+		BAA92F591E730F3B000E8803 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F581E730F3B000E8803 /* ViewController.swift */; };
+		BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5A1E730F3B000E8803 /* Main.storyboard */; };
+		BAA92F5E1E730F3B000E8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5D1E730F3B000E8803 /* Assets.xcassets */; };
+		BAA92F611E730F3B000E8803 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */; };
+		BAA92F6C1E730F3B000E8803 /* TicketMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BAA92F681E730F3B000E8803 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BAA92F4B1E730F3A000E8803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BAA92F521E730F3B000E8803;
+			remoteInfo = TicketMachine;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BAA92F531E730F3B000E8803 /* TicketMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAA92F561E730F3B000E8803 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BAA92F581E730F3B000E8803 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BAA92F5B1E730F3B000E8803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BAA92F5D1E730F3B000E8803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BAA92F601E730F3B000E8803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BAA92F621E730F3B000E8803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAA92F671E730F3B000E8803 /* TicketMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicketMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketMachineTests.swift; sourceTree = "<group>"; };
+		BAA92F6D1E730F3B000E8803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BAA92F501E730F3B000E8803 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAA92F641E730F3B000E8803 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BAA92F4A1E730F3A000E8803 = {
+			isa = PBXGroup;
+			children = (
+				BAA92F551E730F3B000E8803 /* TicketMachine */,
+				BAA92F6A1E730F3B000E8803 /* TicketMachineTests */,
+				BAA92F541E730F3B000E8803 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BAA92F541E730F3B000E8803 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BAA92F531E730F3B000E8803 /* TicketMachine.app */,
+				BAA92F671E730F3B000E8803 /* TicketMachineTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BAA92F551E730F3B000E8803 /* TicketMachine */ = {
+			isa = PBXGroup;
+			children = (
+				BAA92F561E730F3B000E8803 /* AppDelegate.swift */,
+				BAA92F581E730F3B000E8803 /* ViewController.swift */,
+				BAA92F5A1E730F3B000E8803 /* Main.storyboard */,
+				BAA92F5D1E730F3B000E8803 /* Assets.xcassets */,
+				BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */,
+				BAA92F621E730F3B000E8803 /* Info.plist */,
+			);
+			path = TicketMachine;
+			sourceTree = "<group>";
+		};
+		BAA92F6A1E730F3B000E8803 /* TicketMachineTests */ = {
+			isa = PBXGroup;
+			children = (
+				BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */,
+				BAA92F6D1E730F3B000E8803 /* Info.plist */,
+			);
+			path = TicketMachineTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BAA92F521E730F3B000E8803 /* TicketMachine */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAA92F701E730F3B000E8803 /* Build configuration list for PBXNativeTarget "TicketMachine" */;
+			buildPhases = (
+				BAA92F4F1E730F3B000E8803 /* Sources */,
+				BAA92F501E730F3B000E8803 /* Frameworks */,
+				BAA92F511E730F3B000E8803 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TicketMachine;
+			productName = TicketMachine;
+			productReference = BAA92F531E730F3B000E8803 /* TicketMachine.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BAA92F661E730F3B000E8803 /* TicketMachineTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAA92F731E730F3B000E8803 /* Build configuration list for PBXNativeTarget "TicketMachineTests" */;
+			buildPhases = (
+				BAA92F631E730F3B000E8803 /* Sources */,
+				BAA92F641E730F3B000E8803 /* Frameworks */,
+				BAA92F651E730F3B000E8803 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BAA92F691E730F3B000E8803 /* PBXTargetDependency */,
+			);
+			name = TicketMachineTests;
+			productName = TicketMachineTests;
+			productReference = BAA92F671E730F3B000E8803 /* TicketMachineTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BAA92F4B1E730F3A000E8803 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Arvids Gargurnis";
+				TargetAttributes = {
+					BAA92F521E730F3B000E8803 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 83PC9N4FF4;
+						ProvisioningStyle = Automatic;
+					};
+					BAA92F661E730F3B000E8803 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 83PC9N4FF4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = BAA92F521E730F3B000E8803;
+					};
+				};
+			};
+			buildConfigurationList = BAA92F4E1E730F3A000E8803 /* Build configuration list for PBXProject "TicketMachine" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BAA92F4A1E730F3A000E8803;
+			productRefGroup = BAA92F541E730F3B000E8803 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BAA92F521E730F3B000E8803 /* TicketMachine */,
+				BAA92F661E730F3B000E8803 /* TicketMachineTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BAA92F511E730F3B000E8803 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAA92F611E730F3B000E8803 /* LaunchScreen.storyboard in Resources */,
+				BAA92F5E1E730F3B000E8803 /* Assets.xcassets in Resources */,
+				BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAA92F651E730F3B000E8803 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BAA92F4F1E730F3B000E8803 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAA92F591E730F3B000E8803 /* ViewController.swift in Sources */,
+				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAA92F631E730F3B000E8803 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAA92F6C1E730F3B000E8803 /* TicketMachineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BAA92F691E730F3B000E8803 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BAA92F521E730F3B000E8803 /* TicketMachine */;
+			targetProxy = BAA92F681E730F3B000E8803 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BAA92F5A1E730F3B000E8803 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BAA92F5B1E730F3B000E8803 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BAA92F601E730F3B000E8803 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BAA92F6E1E730F3B000E8803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BAA92F6F1E730F3B000E8803 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BAA92F711E730F3B000E8803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 83PC9N4FF4;
+				INFOPLIST_FILE = TicketMachine/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		BAA92F721E730F3B000E8803 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 83PC9N4FF4;
+				INFOPLIST_FILE = TicketMachine/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		BAA92F741E730F3B000E8803 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 83PC9N4FF4;
+				INFOPLIST_FILE = TicketMachineTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachineTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketMachine.app/TicketMachine";
+			};
+			name = Debug;
+		};
+		BAA92F751E730F3B000E8803 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 83PC9N4FF4;
+				INFOPLIST_FILE = TicketMachineTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachineTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketMachine.app/TicketMachine";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BAA92F4E1E730F3A000E8803 /* Build configuration list for PBXProject "TicketMachine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAA92F6E1E730F3B000E8803 /* Debug */,
+				BAA92F6F1E730F3B000E8803 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BAA92F701E730F3B000E8803 /* Build configuration list for PBXNativeTarget "TicketMachine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAA92F711E730F3B000E8803 /* Debug */,
+				BAA92F721E730F3B000E8803 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BAA92F731E730F3B000E8803 /* Build configuration list for PBXNativeTarget "TicketMachineTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAA92F741E730F3B000E8803 /* Debug */,
+				BAA92F751E730F3B000E8803 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BAA92F4B1E730F3A000E8803 /* Project object */;
+}
