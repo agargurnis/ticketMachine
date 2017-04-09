@@ -7,16 +7,67 @@
 //
 
 import UIKit
+import UserNotifications
+import CloudKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        if #available(iOS 10, *) {
+            
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
+                
+                guard error == nil else {
+                    print(error.debugDescription)
+                    return
+                }
+                
+                if granted {
+                    application.registerForRemoteNotifications()
+                } else {
+                    // do nothing
+                }
+            }
+            application.registerForRemoteNotifications()
+        } else {
+            let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+            application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
+        }
+        
         return true
+    }
+    
+//    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+//        
+//        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+//        print(deviceTokenString)
+//        
+//    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        let cloudKitNotification = CKNotification(fromRemoteNotificationDictionary: userInfo as! [String:NSObject])
+        
+        if cloudKitNotification.notificationType == CKNotificationType.query {
+            DispatchQueue.main.async(execute: { () -> Void in
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "performReload"), object: nil)
+            })
+        }
+    }
+    
+    func resetBadge() {
+        let badgeReset = CKModifyBadgeOperation(badgeValue: 0)
+        badgeReset.modifyBadgeCompletionBlock = { (error) -> Void in
+            if error == nil {
+                UIApplication.shared.applicationIconBadgeNumber = 0
+            }
+        }
+        CKContainer.default().add(badgeReset)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -25,12 +76,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        resetBadge()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        DispatchQueue.main.async(execute: { () -> Void in
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "performReload"), object: nil)
+        })
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

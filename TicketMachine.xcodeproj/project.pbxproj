@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46B7081E96C0E700357227 /* TutorTableViewController.swift */; };
 		BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F561E730F3B000E8803 /* AppDelegate.swift */; };
-		BAA92F591E730F3B000E8803 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F581E730F3B000E8803 /* ViewController.swift */; };
 		BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5A1E730F3B000E8803 /* Main.storyboard */; };
 		BAA92F5E1E730F3B000E8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5D1E730F3B000E8803 /* Assets.xcassets */; };
 		BAA92F611E730F3B000E8803 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */; };
 		BAA92F6C1E730F3B000E8803 /* TicketMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */; };
+		BABEB8C21E957B97000AB2CD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BABEB8C11E957B97000AB2CD /* CloudKit.framework */; };
+		BAD4315F1E96D4B600B4B1DB /* StudentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */; };
+		BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,9 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BA46B7081E96C0E700357227 /* TutorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorTableViewController.swift; sourceTree = "<group>"; };
 		BAA92F531E730F3B000E8803 /* TicketMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA92F561E730F3B000E8803 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BAA92F581E730F3B000E8803 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BAA92F5B1E730F3B000E8803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BAA92F5D1E730F3B000E8803 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAA92F601E730F3B000E8803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +39,10 @@
 		BAA92F671E730F3B000E8803 /* TicketMachineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicketMachineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketMachineTests.swift; sourceTree = "<group>"; };
 		BAA92F6D1E730F3B000E8803 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAA92F761E730F4E000E8803 /* TicketMachine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TicketMachine.entitlements; sourceTree = "<group>"; };
+		BABEB8C11E957B97000AB2CD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTableViewController.swift; sourceTree = "<group>"; };
+		BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BABEB8C21E957B97000AB2CD /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +70,7 @@
 				BAA92F551E730F3B000E8803 /* TicketMachine */,
 				BAA92F6A1E730F3B000E8803 /* TicketMachineTests */,
 				BAA92F541E730F3B000E8803 /* Products */,
+				BAA92F771E730F54000E8803 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,9 +86,12 @@
 		BAA92F551E730F3B000E8803 /* TicketMachine */ = {
 			isa = PBXGroup;
 			children = (
+				BAA92F761E730F4E000E8803 /* TicketMachine.entitlements */,
 				BAA92F561E730F3B000E8803 /* AppDelegate.swift */,
-				BAA92F581E730F3B000E8803 /* ViewController.swift */,
+				BA46B7081E96C0E700357227 /* TutorTableViewController.swift */,
+				BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */,
 				BAA92F5A1E730F3B000E8803 /* Main.storyboard */,
+				BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */,
 				BAA92F5D1E730F3B000E8803 /* Assets.xcassets */,
 				BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */,
 				BAA92F621E730F3B000E8803 /* Info.plist */,
@@ -94,6 +106,14 @@
 				BAA92F6D1E730F3B000E8803 /* Info.plist */,
 			);
 			path = TicketMachineTests;
+			sourceTree = "<group>";
+		};
+		BAA92F771E730F54000E8803 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BABEB8C11E957B97000AB2CD /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +168,14 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 83PC9N4FF4;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					BAA92F661E730F3B000E8803 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -201,8 +229,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAA92F591E730F3B000E8803 /* ViewController.swift in Sources */,
+				BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */,
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
+				BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */,
+				BAD4315F1E96D4B600B4B1DB /* StudentTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,8 +371,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TicketMachine/TicketMachine.entitlements;
 				DEVELOPMENT_TEAM = 83PC9N4FF4;
 				INFOPLIST_FILE = TicketMachine/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -354,8 +386,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TicketMachine/TicketMachine.entitlements;
 				DEVELOPMENT_TEAM = 83PC9N4FF4;
 				INFOPLIST_FILE = TicketMachine/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -412,6 +446,7 @@
 				BAA92F721E730F3B000E8803 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BAA92F731E730F3B000E8803 /* Build configuration list for PBXNativeTarget "TicketMachineTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +455,7 @@
 				BAA92F751E730F3B000E8803 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
