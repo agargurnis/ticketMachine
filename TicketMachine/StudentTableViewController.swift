@@ -77,42 +77,16 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         
     }
     
-//    @IBAction func sendRequest(_ sender: Any) {
-//        
-//        let alert = UIAlertController(title: "New Question", message: "Enter your question", preferredStyle: .alert)
-//        alert.addTextField { (textField: UITextField) in
-//            textField.placeholder = "Your question"
-//        }
-//        
-//        alert.addAction(UIAlertAction(title: "Send", style: .default, handler: { (action: UIAlertAction) in
-//            let textField = alert.textFields?.first!
-//            
-//            if textField?.text != "" {
-//                let newQuestion = CKRecord(recordType: "Question")
-//                newQuestion["content"] = textField?.text as CKRecordValue?
-//                
-//                let publicData = CKContainer.default().publicCloudDatabase
-//                
-//                publicData.save(newQuestion, completionHandler: { (record: CKRecord?, error: Error?) in
-//                    if error == nil {
-//                        DispatchQueue.main.async(execute: { () -> Void in
-//                            self.tableView.beginUpdates()
-//                            self.sessions.insert(newsession, at: 0)
-//                            let indexPath = NSIndexPath(row: 0, section: 0)
-//                            self.tableView.insertRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.top)
-//                            self.tableView.endUpdates()
-//                        })
-//                    } else if let e = error {
-//                        print(e.localizedDescription)
-//                    }
-//                })
-//            }
-//        }))
-//        
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        self.present(alert, animated: true, completion: nil)
-//        
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
+        let destination = segue.destination as! PasscodeViewController
+        
+        let selectRecord = sessions[indexPath.row]
+        
+        let Passcode = selectRecord.object(forKey: "Passcode") as? Int
+        
+        destination.sessionPass = Passcode!
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -138,12 +112,12 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         
         let session = sessions[indexPath.row]
         
-        if let sessionContent = session["content"] as? String {
+        if let sessionName = session["Name"] as? String {
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "yyyy/MM/dd HH:mm"
             let dateString = dateFormat.string(from: session.creationDate!)
             
-            cell.textLabel?.text = sessionContent
+            cell.textLabel?.text = sessionName
             cell.detailTextLabel?.text = dateString
         }
         

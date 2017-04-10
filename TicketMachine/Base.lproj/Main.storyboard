@@ -42,7 +42,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="jqC-Bd-q2H" kind="show" id="rvy-Se-ErS"/>
+                                    <segue destination="hHT-UK-KlD" kind="show" id="bN7-KC-ULQ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -57,10 +57,10 @@
             </objects>
             <point key="canvasLocation" x="761" y="647"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Session Table View Controller-->
         <scene sceneID="rrg-sB-lS2">
             <objects>
-                <tableViewController id="jqC-Bd-q2H" sceneMemberID="viewController">
+                <tableViewController id="jqC-Bd-q2H" customClass="SessionTableViewController" customModule="TicketMachine" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Lre-YA-5Pp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -83,7 +83,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Ez-cQ-ETj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1486" y="646"/>
+            <point key="canvasLocation" x="2186" y="646"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="bh7-No-0Ze">
@@ -243,6 +243,176 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n5d-ib-rnx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-852" y="266"/>
+        </scene>
+        <!--Passcode View Controller-->
+        <scene sceneID="P54-aC-mFH">
+            <objects>
+                <viewController id="hHT-UK-KlD" customClass="PasscodeViewController" customModule="TicketMachine" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="joQ-Sq-61O"/>
+                        <viewControllerLayoutGuide type="bottom" id="fMa-EQ-znb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Dc8-A9-sJc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pqZ-UG-Aee">
+                                <rect key="frame" x="172.5" y="408.5" width="30" height="30"/>
+                                <state key="normal" title="5"/>
+                                <connections>
+                                    <action selector="btn5:" destination="hHT-UK-KlD" eventType="touchUpInside" id="9HO-mw-GTN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kMr-Gp-T7Y">
+                                <rect key="frame" x="172.5" y="360.5" width="30" height="30"/>
+                                <state key="normal" title="2"/>
+                                <connections>
+                                    <action selector="btn2:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Rpz-WY-B0U"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xZ-Dr-PxV">
+                                <rect key="frame" x="238.5" y="360.5" width="30" height="30"/>
+                                <state key="normal" title="3"/>
+                                <connections>
+                                    <action selector="btn3:" destination="hHT-UK-KlD" eventType="touchUpInside" id="v5G-7V-XyA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z3D-h7-3dU">
+                                <rect key="frame" x="238.5" y="408.5" width="30" height="30"/>
+                                <state key="normal" title="6"/>
+                                <connections>
+                                    <action selector="btn6:" destination="hHT-UK-KlD" eventType="touchUpInside" id="1lt-vC-PiR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cs8-TH-iau">
+                                <rect key="frame" x="106.5" y="360.5" width="30" height="30"/>
+                                <state key="normal" title="1"/>
+                                <connections>
+                                    <action selector="btn1:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Na7-hc-tC2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dCF-az-6ez">
+                                <rect key="frame" x="106.5" y="408.5" width="30" height="30"/>
+                                <state key="normal" title="4"/>
+                                <connections>
+                                    <action selector="btn4:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Uf0-gi-J8r"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sqz-LO-mQa">
+                                <rect key="frame" x="238.5" y="456.5" width="30" height="30"/>
+                                <state key="normal" title="9"/>
+                                <connections>
+                                    <action selector="btn9:" destination="hHT-UK-KlD" eventType="touchUpInside" id="WIK-zL-N1K"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ENa-TS-eec">
+                                <rect key="frame" x="106.5" y="456.5" width="30" height="30"/>
+                                <state key="normal" title="7"/>
+                                <connections>
+                                    <action selector="btn7:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Tze-1z-8Xw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLS-Ez-ydF">
+                                <rect key="frame" x="172.5" y="514.5" width="30" height="30"/>
+                                <state key="normal" title="0"/>
+                                <connections>
+                                    <action selector="btn0:" destination="hHT-UK-KlD" eventType="touchUpInside" id="O3r-by-gGn"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tW-37-fzf">
+                                <rect key="frame" x="238.5" y="514.5" width="30" height="30"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okBtn:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Edo-0h-NvK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZL-F9-xa8">
+                                <rect key="frame" x="89.5" y="514.5" width="47" height="30"/>
+                                <state key="normal" title="CLEAR"/>
+                                <connections>
+                                    <action selector="clearBtn:" destination="hHT-UK-KlD" eventType="touchUpInside" id="Owb-BN-zfL"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="****" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tgQ-jo-sQ1">
+                                <rect key="frame" x="171" y="309.5" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFA-Xi-zE6">
+                                <rect key="frame" x="172.5" y="456.5" width="30" height="30"/>
+                                <state key="normal" title="8"/>
+                                <connections>
+                                    <action selector="btn8:" destination="hHT-UK-KlD" eventType="touchUpInside" id="tep-VO-GRZ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="And passcode to join session" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAm-4e-VhN">
+                                <rect key="frame" x="38" y="252" width="299" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="efX-Td-WPe">
+                                <rect key="frame" x="67" y="172" width="241" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="owr-rx-GTv">
+                                <rect key="frame" x="67.5" y="114" width="240.5" height="27.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="bFA-Xi-zE6" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="0iZ-s3-21A"/>
+                            <constraint firstItem="HAm-4e-VhN" firstAttribute="top" secondItem="efX-Td-WPe" secondAttribute="bottom" constant="50" id="2lb-ZN-dzh"/>
+                            <constraint firstItem="efX-Td-WPe" firstAttribute="top" secondItem="owr-rx-GTv" secondAttribute="bottom" constant="30" id="2q8-Hl-B3F"/>
+                            <constraint firstItem="owr-rx-GTv" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="3Bk-u7-PjQ"/>
+                            <constraint firstItem="bFA-Xi-zE6" firstAttribute="top" secondItem="pqZ-UG-Aee" secondAttribute="bottom" constant="18" id="3bH-LL-yPx"/>
+                            <constraint firstItem="4tW-37-fzf" firstAttribute="leading" secondItem="PLS-Ez-ydF" secondAttribute="trailing" constant="36" id="4xr-7j-sPq"/>
+                            <constraint firstItem="pqZ-UG-Aee" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="6gc-eX-wKB"/>
+                            <constraint firstItem="cs8-TH-iau" firstAttribute="baseline" secondItem="kMr-Gp-T7Y" secondAttribute="baseline" id="9AM-zI-Ruk"/>
+                            <constraint firstItem="4tW-37-fzf" firstAttribute="baseline" secondItem="PLS-Ez-ydF" secondAttribute="baseline" id="Clh-H0-Izb"/>
+                            <constraint firstItem="HAm-4e-VhN" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="Gec-Hm-JdE"/>
+                            <constraint firstItem="sqz-LO-mQa" firstAttribute="leading" secondItem="bFA-Xi-zE6" secondAttribute="trailing" constant="36" id="HmY-3Z-Uv4"/>
+                            <constraint firstItem="CZL-F9-xa8" firstAttribute="top" secondItem="ENa-TS-eec" secondAttribute="bottom" constant="28" id="Mtm-4i-o4f"/>
+                            <constraint firstItem="cs8-TH-iau" firstAttribute="baseline" secondItem="0xZ-Dr-PxV" secondAttribute="baseline" id="QhL-GN-bYi"/>
+                            <constraint firstItem="kMr-Gp-T7Y" firstAttribute="leading" secondItem="cs8-TH-iau" secondAttribute="trailing" constant="36" id="Qx3-e6-sdV"/>
+                            <constraint firstItem="bFA-Xi-zE6" firstAttribute="leading" secondItem="ENa-TS-eec" secondAttribute="trailing" constant="36" id="RZZ-Kv-1Et"/>
+                            <constraint firstItem="tgQ-jo-sQ1" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="SJi-Ik-qhz"/>
+                            <constraint firstItem="PLS-Ez-ydF" firstAttribute="leading" secondItem="CZL-F9-xa8" secondAttribute="trailing" constant="36" id="TAc-X9-yKO"/>
+                            <constraint firstItem="Z3D-h7-3dU" firstAttribute="baseline" secondItem="pqZ-UG-Aee" secondAttribute="baseline" id="Teu-Dk-7VI"/>
+                            <constraint firstItem="0xZ-Dr-PxV" firstAttribute="leading" secondItem="kMr-Gp-T7Y" secondAttribute="trailing" constant="36" id="UaE-WB-CvM"/>
+                            <constraint firstItem="efX-Td-WPe" firstAttribute="width" secondItem="owr-rx-GTv" secondAttribute="width" id="Wij-kH-kgH"/>
+                            <constraint firstItem="pqZ-UG-Aee" firstAttribute="leading" secondItem="dCF-az-6ez" secondAttribute="trailing" constant="36" id="Wo0-e5-7xc"/>
+                            <constraint firstItem="pqZ-UG-Aee" firstAttribute="centerY" secondItem="Dc8-A9-sJc" secondAttribute="centerY" constant="90" id="Wsf-e7-GM9"/>
+                            <constraint firstItem="ENa-TS-eec" firstAttribute="baseline" secondItem="sqz-LO-mQa" secondAttribute="baseline" id="bfl-1x-gyW"/>
+                            <constraint firstItem="efX-Td-WPe" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="dPV-Up-uhq"/>
+                            <constraint firstItem="kMr-Gp-T7Y" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="dzB-AX-5wQ"/>
+                            <constraint firstItem="dCF-az-6ez" firstAttribute="top" secondItem="cs8-TH-iau" secondAttribute="bottom" constant="18" id="etp-4m-lZW"/>
+                            <constraint firstItem="PLS-Ez-ydF" firstAttribute="centerX" secondItem="Dc8-A9-sJc" secondAttribute="centerX" id="nq8-43-aO8"/>
+                            <constraint firstItem="Z3D-h7-3dU" firstAttribute="leading" secondItem="pqZ-UG-Aee" secondAttribute="trailing" constant="36" id="r8b-FX-lHE"/>
+                            <constraint firstItem="PLS-Ez-ydF" firstAttribute="top" secondItem="bFA-Xi-zE6" secondAttribute="bottom" constant="28" id="rG3-r0-4Y1"/>
+                            <constraint firstItem="pqZ-UG-Aee" firstAttribute="top" secondItem="kMr-Gp-T7Y" secondAttribute="bottom" constant="18" id="tQG-i0-ZZe"/>
+                            <constraint firstItem="owr-rx-GTv" firstAttribute="top" secondItem="joQ-Sq-61O" secondAttribute="bottom" constant="50" id="vSg-C4-hcp"/>
+                            <constraint firstItem="tgQ-jo-sQ1" firstAttribute="top" secondItem="HAm-4e-VhN" secondAttribute="bottom" constant="30" id="xna-lx-CZ3"/>
+                            <constraint firstItem="ENa-TS-eec" firstAttribute="baseline" secondItem="bFA-Xi-zE6" secondAttribute="baseline" id="y5d-1U-UOM"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="clearLbl" destination="CZL-F9-xa8" id="2gw-BM-Vhy"/>
+                        <outlet property="okLbl" destination="4tW-37-fzf" id="lNF-dx-mBa"/>
+                        <outlet property="passwordLbl" destination="tgQ-jo-sQ1" id="N1j-ZH-RcY"/>
+                        <outlet property="usernameLbl" destination="efX-Td-WPe" id="xbv-Zf-DAX"/>
+                        <segue destination="jqC-Bd-q2H" kind="show" identifier="toSessionTable" id="ekl-fh-2z1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iyA-p9-McL" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1485.5999999999999" y="644.52773613193403"/>
         </scene>
     </scenes>
 </document>

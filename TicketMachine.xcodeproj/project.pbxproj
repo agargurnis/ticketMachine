@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */; };
 		BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46B7081E96C0E700357227 /* TutorTableViewController.swift */; };
 		BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F561E730F3B000E8803 /* AppDelegate.swift */; };
 		BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5A1E730F3B000E8803 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeViewController.swift; sourceTree = "<group>"; };
 		BA46B7081E96C0E700357227 /* TutorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorTableViewController.swift; sourceTree = "<group>"; };
 		BAA92F531E730F3B000E8803 /* TicketMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA92F561E730F3B000E8803 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				BA46B7081E96C0E700357227 /* TutorTableViewController.swift */,
 				BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */,
 				BAA92F5A1E730F3B000E8803 /* Main.storyboard */,
+				BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */,
 				BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */,
 				BAA92F5D1E730F3B000E8803 /* Assets.xcassets */,
 				BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */,
@@ -231,6 +234,7 @@
 			files = (
 				BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */,
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
+				BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */,
 				BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */,
 				BAD4315F1E96D4B600B4B1DB /* StudentTableViewController.swift in Sources */,
 			);
