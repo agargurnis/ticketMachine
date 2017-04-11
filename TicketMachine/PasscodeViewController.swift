@@ -12,6 +12,7 @@ import CloudKit
 class PasscodeViewController: UIViewController {
 
     var sessionPass = Int()
+    var sessionID = Int()
     
     var keypadPasswordArray = [Int]()
     var sessions = [CKRecord]()
@@ -134,8 +135,10 @@ class PasscodeViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toSessionTable" {
-            if let destViewController = segue.destination as? SessionTableViewController {
-                destViewController.userName = usernameLbl.text!
+            if let destinationController = segue.destination as? SessionTableViewController {
+                destinationController.userName = usernameLbl.text!
+                destinationController.sessionID = sessionID
+          
             }
         }
     }

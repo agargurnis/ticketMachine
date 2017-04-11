@@ -83,9 +83,11 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         
         let selectRecord = sessions[indexPath.row]
         
-        let Passcode = selectRecord.object(forKey: "Passcode") as? Int
+        let passcode = selectRecord.object(forKey: "Passcode") as? Int
+        let sessionID = selectRecord.object(forKey: "ID") as? Int
         
-        destination.sessionPass = Passcode!
+        destination.sessionPass = passcode!
+        destination.sessionID = sessionID!
     }
     
     override func didReceiveMemoryWarning() {

@@ -162,16 +162,5 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         return cell
 
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
-//        let desti = segue.destination as! SessionTableViewController
-//        
-//        let selectRecord = sessions[indexPath.row]
-//        
-//        let name = selectRecord.object(forKey: <#T##String#>)
-//        
-//        
-//    }
 
 }
