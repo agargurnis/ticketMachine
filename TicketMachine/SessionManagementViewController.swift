@@ -59,12 +59,12 @@ class SessionManagementViewController: UITableViewController {
         }
     }
     
-    func requestTicketFromCloud() {
-        let recordID = CKRecordID(recordName: myRecordName)
+    func checkParticipant(participantRecordName: String) {
+        let recordID = CKRecordID(recordName: participantRecordName)
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
-                record?.setObject("waiting" as CKRecordValue, forKey: "Status")
+                record?.setObject("notWaiting" as CKRecordValue, forKey: "Status")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
@@ -152,25 +152,33 @@ class SessionManagementViewController: UITableViewController {
         }
     }
  
-
-    /*
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            // Delete the row from the data source
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        } else if editingStyle == .insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }    
+//    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let answerAction = UITableViewRowAction.init(style: .normal, title: "Checked") { (action:UITableViewRowAction, indexPath:IndexPath) in
+        
+            let selectedParticipant = self.participantsWaiting[indexPath.row]
+            let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
+            let recordName = participantRecordID.recordName
+            self.checkParticipant(participantRecordName: recordName)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.loadData()
+            })
+        }
+        
+        answerAction.backgroundColor = UIColor.red
+        return [answerAction]
     }
-    */
 
 }
