@@ -36,7 +36,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     func setupCloudKitSubscription() {
         let userDefaults = UserDefaults.standard
         
-        if userDefaults.bool(forKey: "subscribed") == false {
+        if userDefaults.bool(forKey: "subscribedForNewSessions") == false {
             let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
             let subscription = CKQuerySubscription(recordType: "Session", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
             let notificationInfo = CKNotificationInfo()
@@ -51,7 +51,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
-                    userDefaults.set(true, forKey: "subscribed")
+                    userDefaults.set(true, forKey: "subscribedForNewSessions")
                     userDefaults.synchronize()
                 }
             }
@@ -122,6 +122,17 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         sessionAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(sessionAlert, animated: true, completion: nil)
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
+        let destination = segue.destination as! SessionManagementViewController
+        
+        let selectRecord = sessions[indexPath.row]
+        
+        let sessionID = selectRecord.object(forKey: "ID") as? Int
+        
+        destination.sessionID = sessionID!
     }
 
     override func didReceiveMemoryWarning() {

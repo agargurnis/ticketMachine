@@ -1,24 +1,19 @@
 //
-//  SessionTableViewController.swift
+//  SessionManagementViewController.swift
 //  TicketMachine
 //
-//  Created by Arvids Gargurnis on 07/04/2017.
+//  Created by Arvids Gargurnis on 14/04/2017.
 //  Copyright © 2017 Arvids Gargurnis. All rights reserved.
 //
 
 import UIKit
 import CloudKit
 
-class SessionTableViewController: UITableViewController {
+class SessionManagementViewController: UITableViewController {
     
     let publicData = CKContainer.default().publicCloudDatabase
-    var username = String()
     var sessionID = Int()
-    var userID = Int()
     var myRecordName = String()
-    
-    @IBOutlet weak var helpBtn: UIBarButtonItem!
-    var status = "notWaiting"
     
     var participants = [CKRecord]()
     var participantsWaiting = [CKRecord]()
@@ -28,6 +23,7 @@ class SessionTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         loadData()
         
@@ -39,44 +35,13 @@ class SessionTableViewController: UITableViewController {
         DispatchQueue.main.async { () -> Void in
             NotificationCenter.default.addObserver(self, selector: #selector(SessionTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
-        
-        checkUser()
-        setupCloudKitSubscription()
-    }
-    @IBAction func goBack(_ sender: Any) {
-        self.navigationController?.popToViewController((navigationController?.viewControllers[1])!, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func setupCloudKitSubscription() {
-        let userDefaults = UserDefaults.standard
-        
-        if userDefaults.bool(forKey: "sessionSub") == false {
-            let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
-            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options:  [CKQuerySubscriptionOptions.firesOnRecordUpdate, CKQuerySubscriptionOptions.firesOnRecordCreation])
-           
-//            let notificationInfo = CKNotificationInfo()
-//            notificationInfo.alertLocalizationKey = "New Modification"
-//            notificationInfo.shouldBadge = true
-//            subscription.notificationInfo = notificationInfo
-            
-            let publicData = CKContainer.default().publicCloudDatabase
-            
-            publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    userDefaults.set(true, forKey: "sessionSub")
-                    userDefaults.synchronize()
-                }
-            }
-        }
-    }
-    
+
     func loadData() {
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
@@ -94,59 +59,9 @@ class SessionTableViewController: UITableViewController {
         }
     }
     
-    func checkUser() {
-        var userExists = false
-        let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        
-        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let participants = results {
-                for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
-                    let pSessionID = participant.object(forKey: "SessionID") as! Int
-                    if participantID == self.userID && pSessionID == self.sessionID {
-                        userExists = true
-                        self.getRecordName()
-                        self.helpBtn.isEnabled = true
-                        break
-                    }
-                }
-                if userExists == false {
-                    self.addParticipant()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
-                        self.getRecordName()
-                        self.helpBtn.isEnabled = true
-                    })
-                }
-            }
-        }
-    }
-
-    func addParticipant() {
-        let newParticipant = CKRecord(recordType: "Participant")
-        newParticipant["Username"] = username as CKRecordValue?
-        newParticipant["ParticipantID"] = userID as CKRecordValue?
-        newParticipant["Status"] = status as CKRecordValue?
-        newParticipant["SessionID"] = sessionID as CKRecordValue?
-        
-        publicData.save(newParticipant, completionHandler: { (record:CKRecord?, error:Error?) in
-            if error == nil {
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.tableView.beginUpdates()
-                    self.participantsNotWaiting.insert(newParticipant, at: 0)
-                    let indexPath = NSIndexPath(row: 0, section: 1)
-                    self.tableView.insertRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.top)
-                    self.tableView.endUpdates()
-                })
-            } else if let e = error {
-                print(e.localizedDescription)
-            }
-        })
-        
-    }
-    
     func requestTicketFromCloud() {
         let recordID = CKRecordID(recordName: myRecordName)
- 
+        
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 record?.setObject("waiting" as CKRecordValue, forKey: "Status")
@@ -164,22 +79,22 @@ class SessionTableViewController: UITableViewController {
         })
     }
     
-    func getRecordName() {
-        let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        
-        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let participants = results {
-                for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
-                    let pSessionID = participant.object(forKey: "SessionID") as! Int
-                    if participantID == self.userID && pSessionID == self.sessionID {
-                        let recordID = participant.value(forKey: "recordID") as! CKRecordID
-                        self.myRecordName = recordID.recordName
-                    }
-                }
-            }
-        }
-    }
+//    func getRecordName() {
+//        let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+//        
+//        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+//            if let participants = results {
+//                for participant in participants {
+//                    let participantID = participant.object(forKey: "ParticipantID") as! Int
+//                    let pSessionID = participant.object(forKey: "SessionID") as! Int
+//                    if participantID == self.userID && pSessionID == self.sessionID {
+//                        let recordID = participant.value(forKey: "recordID") as! CKRecordID
+//                        self.myRecordName = recordID.recordName
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func sortParticipants() {
         participantsWaiting.removeAll()
@@ -193,14 +108,6 @@ class SessionTableViewController: UITableViewController {
             }
         }
     }
-
-    @IBAction func requestTicket(_ sender: Any) {
-        requestTicketFromCloud()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-            self.loadData()
-        })
-    }
-    
     
     // MARK: - Table view data source
 
@@ -218,7 +125,7 @@ class SessionTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "participantCell", for: indexPath)
-
+        
         if indexPath.section == 0 {
             let participantWaiting = participantsWaiting[indexPath.row]
             let dateFormat = DateFormatter()
@@ -244,4 +151,26 @@ class SessionTableViewController: UITableViewController {
             return cell
         }
     }
+ 
+
+    /*
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    */
+
+    /*
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }    
+    }
+    */
+
 }

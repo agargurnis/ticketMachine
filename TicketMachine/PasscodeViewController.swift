@@ -12,10 +12,11 @@ import CloudKit
 class PasscodeViewController: UIViewController {
 
     var sessionPass = Int()
+    var username = String()
+    var userID = Int()
     var sessionID = Int()
     
     var keypadPasswordArray = [Int]()
-    var sessions = [CKRecord]()
     
     @IBOutlet weak var usernameLbl: UITextField!
     @IBOutlet weak var passwordLbl: UILabel!
@@ -88,10 +89,8 @@ class PasscodeViewController: UIViewController {
         let userPass = Int(passString)
 
         if(sessionPass == userPass){
-            print("Success")
             performSegue(withIdentifier: "toSessionTable", sender: self)
         } else {
-            print("Fail")
             keypadPasswordArray.removeAll()
             passwordLbl.text = ""
             clearLbl.isEnabled = false
@@ -119,13 +118,22 @@ class PasscodeViewController: UIViewController {
         clearLbl.isEnabled = true
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+//        super.viewWillAppear(animated)
+//    }
+//    
+//    override func viewWillDisappear(_ animated: Bool) {
+//        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+//        super.viewWillDisappear(animated)
+//    } 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         passwordLbl.text = ""
         clearLbl.isEnabled = false
         okLbl.isEnabled = false
-        loadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -136,22 +144,9 @@ class PasscodeViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toSessionTable" {
             if let destinationController = segue.destination as? SessionTableViewController {
-                destinationController.userName = usernameLbl.text!
+                destinationController.username = username
+                destinationController.userID = userID
                 destinationController.sessionID = sessionID
-          
-            }
-        }
-    }
-    
-    func loadData() {
-        sessions = [CKRecord]()
-        
-        let publicData = CKContainer.default().publicCloudDatabase
-        let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        
-        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let sessions = results {
-                self.sessions = sessions
             }
         }
     }

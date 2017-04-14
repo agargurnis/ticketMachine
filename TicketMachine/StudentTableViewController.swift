@@ -11,6 +11,8 @@ import CloudKit
 import UserNotifications
 
 class StudentTableViewController: UITableViewController, UNUserNotificationCenterDelegate {
+    var username = String()
+    var userID = Int()
 
     var sessions = [CKRecord]()
     var refresh:UIRefreshControl!
@@ -34,7 +36,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
     func setupCloudKitSubscription() {
         let userDefaults = UserDefaults.standard
         
-        if userDefaults.bool(forKey: "subscribed") == false {
+        if userDefaults.bool(forKey: "subscribedForNewSessions") == false {
             let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
             let subscription = CKQuerySubscription(recordType: "Session", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
             let notificationInfo = CKNotificationInfo()
@@ -49,7 +51,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
-                    userDefaults.set(true, forKey: "subscribed")
+                    userDefaults.set(true, forKey: "subscribedForNewSessions")
                     userDefaults.synchronize()
                 }
             }
@@ -87,6 +89,8 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         let sessionID = selectRecord.object(forKey: "ID") as? Int
         
         destination.sessionPass = passcode!
+        destination.username = username
+        destination.userID = userID
         destination.sessionID = sessionID!
     }
     

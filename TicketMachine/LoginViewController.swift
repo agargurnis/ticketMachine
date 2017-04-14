@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -19,24 +19,30 @@ class LoginViewController: UIViewController {
     let publicData = CKContainer.default().publicCloudDatabase
     var users = [CKRecord]()
     
+    var username = String()
+    var password = String()
+    var userID = Int()
     let role = "student"
-    let status = "notWaiting"
-    var recordID: CKRecordID?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segmentController.selectedSegmentIndex = 0
-        nameField.text = ""
-        passwordField.text = ""
-        idField.text = ""
-        idField.isHidden = true
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        super.viewWillDisappear(animated)
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
@@ -56,6 +62,9 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func buttonClicked(_ sender: Any) {
+        username = nameField.text!
+        password = passwordField.text!
+        
         if segmentController.selectedSegmentIndex == 0 {
             authenticateUser()
         } else if segmentController.selectedSegmentIndex == 1 {
@@ -65,11 +74,10 @@ class LoginViewController: UIViewController {
     
     func registerUser() {
         let newUser = CKRecord(recordType: "Account")
-        newUser["username"] = nameField.text as CKRecordValue?
-        newUser["password"] = passwordField.text as CKRecordValue?
+        newUser["username"] = username as CKRecordValue?
+        newUser["password"] = password as CKRecordValue?
         newUser["id"] = Int(idField.text!) as CKRecordValue?
         newUser["role"] = role as CKRecordValue?
-        newUser["status"] = status as CKRecordValue?
         
         publicData.save(newUser, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
@@ -90,13 +98,14 @@ class LoginViewController: UIViewController {
                 for user in users {
                     let username = user.object(forKey: "username") as! String
                     let password = user.object(forKey: "password") as! String
-                    if self.nameField.text == username && self.passwordField.text == password {
+                    if self.username == username && self.password == password {
                         let userRole = user.object(forKey: "role") as! String
+                        self.userID = user.object(forKey: "id") as! Int
                         DispatchQueue.main.async(execute: { () -> Void in
                             self.loginUser(userRole: userRole)
                         })
                     } else {
-                        print("Login failed")
+                        // show fail feedback
                     }
                 }
             }
@@ -113,6 +122,20 @@ class LoginViewController: UIViewController {
             nameField.text = ""
             passwordField.text = ""
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "studentSegue" {
+            if let destinationController = segue.destination as? StudentTableViewController {
+                destinationController.username = username
+                destinationController.userID = userID
+            }
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     func resetView() {
