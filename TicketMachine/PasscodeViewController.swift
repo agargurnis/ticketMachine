@@ -15,10 +15,10 @@ class PasscodeViewController: UIViewController {
     var username = String()
     var userID = Int()
     var sessionID = Int()
+    var sessionName = String()
     
     var keypadPasswordArray = [Int]()
     
-    @IBOutlet weak var usernameLbl: UITextField!
     @IBOutlet weak var passwordLbl: UILabel!
     @IBOutlet weak var okLbl: UIButton!
     @IBOutlet weak var clearLbl: UIButton!
@@ -147,6 +147,7 @@ class PasscodeViewController: UIViewController {
                 destinationController.username = username
                 destinationController.userID = userID
                 destinationController.sessionID = sessionID
+                destinationController.sessionName = sessionName
             }
         }
     }

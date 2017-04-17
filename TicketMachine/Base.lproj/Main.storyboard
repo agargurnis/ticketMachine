@@ -18,7 +18,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="e5U-u4-dn4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="sessionCell" textLabel="6cw-Wr-ixU" detailTextLabel="IJ5-Bv-uQN" style="IBUITableViewCellStyleSubtitle" id="zP4-8T-bfv">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -43,6 +43,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <segue destination="hHT-UK-KlD" kind="show" id="bN7-KC-ULQ"/>
                                 </connections>
@@ -54,7 +55,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Students Side" id="f7e-SE-gx9">
-                        <barButtonItem key="backBarButtonItem" title="Log Out" id="hBs-c1-ig1"/>
+                        <barButtonItem key="backBarButtonItem" title="Sessions" id="hBs-c1-ig1">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z5i-D1-p2j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -68,7 +71,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Lre-YA-5Pp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="participantCell" textLabel="GIu-xJ-mzE" detailTextLabel="PNb-xR-emj" style="IBUITableViewCellStyleSubtitle" id="mip-Fb-knr">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -102,11 +105,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Session" id="s6n-da-Rfy">
                         <barButtonItem key="leftBarButtonItem" title="Exit Session" id="gos-Ng-BVB">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="goBack:" destination="jqC-Bd-q2H" id="Io4-Yf-Ubu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Request Help" id="Cvn-Lg-t2D">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="requestTicket:" destination="jqC-Bd-q2H" id="FIn-6P-lfL"/>
                             </connections>
@@ -219,7 +224,9 @@
                             <constraint firstItem="iIY-IY-06Q" firstAttribute="width" secondItem="m7X-J6-Nvr" secondAttribute="width" id="zZC-4f-wjK"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Qz0-mi-VUS"/>
+                    <navigationItem key="navigationItem" id="Qz0-mi-VUS">
+                        <barButtonItem key="backBarButtonItem" title="Log Out" id="Pir-Ka-i32"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="idField" destination="nS2-0k-gL9" id="YxM-fr-FtC"/>
                         <outlet property="mainButton" destination="Q1Q-IS-sJF" id="zEL-ry-uAi"/>
@@ -241,7 +248,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="s0d-e9-5uc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="sessionCell" textLabel="MGJ-aK-lgR" detailTextLabel="YBq-9i-71a" style="IBUITableViewCellStyleSubtitle" id="3Wc-8g-jZQ">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -266,6 +273,7 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <segue destination="BGe-H5-DGH" kind="show" id="8Cp-E1-P7c"/>
                                 </connections>
@@ -277,9 +285,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tutors Side" id="4df-qn-8Xf">
-                        <barButtonItem key="backBarButtonItem" title="Log Out" id="lfY-cA-y0j"/>
+                        <barButtonItem key="backBarButtonItem" title="Sessions" id="lfY-cA-y0j"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="uXn-5O-vq7">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="createSession:" destination="mqh-gr-Mex" id="DYo-kB-B6C"/>
                             </connections>
@@ -297,7 +305,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JSb-oO-yiZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="participantCell" textLabel="ncf-n6-XTL" detailTextLabel="tqR-ya-W36" style="IBUITableViewCellStyleSubtitle" id="mmZ-D7-cAf">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -329,7 +337,13 @@
                             <outlet property="delegate" destination="BGe-H5-DGH" id="rir-Am-g81"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Session Management" id="Hlm-w2-DdM"/>
+                    <navigationItem key="navigationItem" title="Session Management" id="Hlm-w2-DdM">
+                        <barButtonItem key="rightBarButtonItem" title="Close" id="6V2-QZ-tpZ">
+                            <connections>
+                                <action selector="endSession:" destination="BGe-H5-DGH" id="0l6-qK-ThB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i4R-8K-vv4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -340,10 +354,14 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fzl-es-Mdd" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qf7-y1-4Pw">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Qf7-y1-4Pw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.20549029111862183" green="0.58287173509597778" blue="0.7960665225982666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -354,7 +372,7 @@
             </objects>
             <point key="canvasLocation" x="-852" y="266"/>
         </scene>
-        <!--Leave Session-->
+        <!--Session-->
         <scene sceneID="P54-aC-mFH">
             <objects>
                 <viewController id="hHT-UK-KlD" customClass="PasscodeViewController" customModule="TicketMachine" customModuleProvider="target" sceneMemberID="viewController">
@@ -508,7 +526,7 @@
                             <constraint firstItem="ENa-TS-eec" firstAttribute="baseline" secondItem="bFA-Xi-zE6" secondAttribute="baseline" id="y5d-1U-UOM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Leave Session" id="xmD-9i-soi"/>
+                    <navigationItem key="navigationItem" title="Session" id="xmD-9i-soi"/>
                     <connections>
                         <outlet property="clearLbl" destination="CZL-F9-xa8" id="2gw-BM-Vhy"/>
                         <outlet property="okLbl" destination="4tW-37-fzf" id="lNF-dx-mBa"/>

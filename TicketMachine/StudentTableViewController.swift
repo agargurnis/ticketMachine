@@ -63,7 +63,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         sessions = [CKRecord]()
         
         let publicData = CKContainer.default().publicCloudDatabase
-        let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "%K == %@", argumentArray: ["Status", "open"]))
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
@@ -85,6 +85,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         
         let selectRecord = sessions[indexPath.row]
         
+        let sessionName = selectRecord.object(forKey: "Name") as? String
         let passcode = selectRecord.object(forKey: "Passcode") as? Int
         let sessionID = selectRecord.object(forKey: "ID") as? Int
         
@@ -92,6 +93,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         destination.username = username
         destination.userID = userID
         destination.sessionID = sessionID!
+        destination.sessionName = sessionName!
     }
     
     override func didReceiveMemoryWarning() {

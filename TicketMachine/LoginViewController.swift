@@ -18,7 +18,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     let publicData = CKContainer.default().publicCloudDatabase
     var users = [CKRecord]()
-    
+
     var username = String()
     var password = String()
     var userID = Int()
@@ -62,14 +62,35 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func buttonClicked(_ sender: Any) {
-        username = nameField.text!
+        username = nameField.text!.lowercased()
         password = passwordField.text!
         
         if segmentController.selectedSegmentIndex == 0 {
             authenticateUser()
         } else if segmentController.selectedSegmentIndex == 1 {
-            registerUser()
+            checkPassword()
         }
+    }
+    
+    func checkPassword(){
+        let passAlert = UIAlertController(title: "Password Verification", message: "Please verify password", preferredStyle: .alert)
+        passAlert.addTextField { (passField: UITextField) in
+            passField.isSecureTextEntry = true
+            passField.placeholder = "Password"
+        }
+        
+        passAlert.addAction(UIAlertAction(title: "Verify", style: .default, handler: { (action: UIAlertAction) in
+            let passwordV = passAlert.textFields?.first?.text
+            
+            if passwordV != "" && passwordV == self.password {
+                self.registerUser()
+            } else {
+                self.present(passAlert, animated: true, completion: nil)
+            }
+        }))
+        
+        passAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(passAlert, animated: true, completion: nil)
     }
     
     func registerUser() {

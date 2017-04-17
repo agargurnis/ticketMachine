@@ -16,6 +16,7 @@ class SessionTableViewController: UITableViewController {
     var sessionID = Int()
     var userID = Int()
     var myRecordName = String()
+    var sessionName = String()
     
     @IBOutlet weak var helpBtn: UIBarButtonItem!
     var status = "notWaiting"
@@ -28,6 +29,7 @@ class SessionTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = sessionName
         
         loadData()
         
@@ -58,11 +60,6 @@ class SessionTableViewController: UITableViewController {
         if userDefaults.bool(forKey: "sessionSub") == false {
             let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
             let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options:  [CKQuerySubscriptionOptions.firesOnRecordUpdate, CKQuerySubscriptionOptions.firesOnRecordCreation])
-           
-//            let notificationInfo = CKNotificationInfo()
-//            notificationInfo.alertLocalizationKey = "New Modification"
-//            notificationInfo.shouldBadge = true
-//            subscription.notificationInfo = notificationInfo
             
             let publicData = CKContainer.default().publicCloudDatabase
             
@@ -85,6 +82,7 @@ class SessionTableViewController: UITableViewController {
             if let participants = results {
                 self.participants = participants
                 self.sortParticipants()
+                self.checkHelpStatus()
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.tableView.reloadData()
                     self.refresh.endRefreshing()
@@ -116,6 +114,26 @@ class SessionTableViewController: UITableViewController {
                         self.getRecordName()
                         self.helpBtn.isEnabled = true
                     })
+                }
+            }
+        }
+    }
+    
+    func checkHelpStatus() {
+        if myRecordName != "" {
+            let recordID = CKRecordID(recordName: myRecordName)
+            
+            publicData.fetch(withRecordID: recordID) { (record:CKRecord?, error:Error?) in
+                if error == nil {
+                    let theStatus = record?.object(forKey: "Status") as? String
+                    
+                    if theStatus == "waiting" {
+                        self.helpBtn.isEnabled = false
+                    } else {
+                        self.helpBtn.isEnabled = true
+                    }
+                } else if let e = error {
+                    print(e.localizedDescription)
                 }
             }
         }
@@ -154,6 +172,7 @@ class SessionTableViewController: UITableViewController {
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully updated record!")
+                        self.helpBtn.isEnabled = false
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }
@@ -224,10 +243,10 @@ class SessionTableViewController: UITableViewController {
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "MM/dd/yyyy HH:mm"
             let dateString = dateFormat.string(from: participantWaiting.modificationDate!)
-            print("waiting")
+            
             cell.textLabel?.text = participantWaiting["Username"] as? String
             cell.detailTextLabel?.text = dateString
-            cell.backgroundColor = UIColor(red:47/255, green:147/255, blue:201/255, alpha:1)
+            cell.backgroundColor = UIColor(red:206/255, green:74/255, blue:80/255, alpha:1)
             
             return cell
             
@@ -236,10 +255,10 @@ class SessionTableViewController: UITableViewController {
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "MM/dd/yyyy HH:mm"
             let dateString = dateFormat.string(from: participantNotWaiting.modificationDate!)
-            print("notWaiting")
+            
             cell.textLabel?.text = participantNotWaiting["Username"] as? String
             cell.detailTextLabel?.text = dateString
-            cell.backgroundColor = UIColor.white
+            cell.backgroundColor = UIColor(red:236/255, green:240/255, blue:241/255, alpha:1)
             
             return cell
         }

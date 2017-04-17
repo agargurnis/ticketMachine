@@ -14,6 +14,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
 
     var sessions = [CKRecord]()
     var refresh:UIRefreshControl!
+    var status = "open"
 
     
     override func viewDidLoad() {
@@ -28,36 +29,34 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
             NotificationCenter.default.addObserver(self, selector: #selector(TutorTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
         
-        setupCloudKitSubscription()
         loadData()
-
     }
     
-    func setupCloudKitSubscription() {
-        let userDefaults = UserDefaults.standard
-        
-        if userDefaults.bool(forKey: "subscribedForNewSessions") == false {
-            let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
-            let subscription = CKQuerySubscription(recordType: "Session", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
-            let notificationInfo = CKNotificationInfo()
-            notificationInfo.alertLocalizationKey = "New Session"
-            notificationInfo.shouldBadge = true
-            
-            subscription.notificationInfo = notificationInfo
-            
-            let publicData = CKContainer.default().publicCloudDatabase
-            
-            publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    userDefaults.set(true, forKey: "subscribedForNewSessions")
-                    userDefaults.synchronize()
-                }
-            }
-        }
-        
-    }
+//    func setupCloudKitSubscription() {
+//        let userDefaults = UserDefaults.standard
+//        
+//        if userDefaults.bool(forKey: "subscribedForNewSessions") == false {
+//            let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
+//            let subscription = CKQuerySubscription(recordType: "Session", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
+//            let notificationInfo = CKNotificationInfo()
+//            notificationInfo.alertLocalizationKey = "New Session"
+//            notificationInfo.shouldBadge = true
+//            
+//            subscription.notificationInfo = notificationInfo
+//            
+//            let publicData = CKContainer.default().publicCloudDatabase
+//            
+//            publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
+//                if let e = error {
+//                    print(e.localizedDescription)
+//                } else {
+//                    userDefaults.set(true, forKey: "subscribedForNewSessions")
+//                    userDefaults.synchronize()
+//                }
+//            }
+//        }
+//        
+//    }
     
     func loadData() {
         sessions = [CKRecord]()
@@ -100,6 +99,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
                 newSession["ID"] = Int((idField?.text!)!) as CKRecordValue?
                 newSession["Name"] = nameField?.text as CKRecordValue?
                 newSession["Passcode"] = Int((passcodeField?.text!)!) as CKRecordValue?
+                newSession["Status"] = self.status as CKRecordValue?
                 
                 let publicData = CKContainer.default().publicCloudDatabase
                 
@@ -130,25 +130,27 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         
         let selectRecord = sessions[indexPath.row]
         
+        let sessionName = selectRecord.object(forKey: "Name") as? String
         let sessionID = selectRecord.object(forKey: "ID") as? Int
+        let sessionRecordID = selectRecord.object(forKey: "recordID") as! CKRecordID
+        let recordName = sessionRecordID.recordName
         
         destination.sessionID = sessionID!
+        destination.sessionRecordName = recordName
+        destination.sessionName = sessionName!
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return sessions.count
     }
 
