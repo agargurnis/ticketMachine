@@ -9,12 +9,14 @@
 import UIKit
 import CloudKit
 
-class SessionManagementViewController: UITableViewController {
+class SessionManagementViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     let publicData = CKContainer.default().publicCloudDatabase
     var sessionID = Int()
     var sessionRecordName = String()
     var sessionName = String()
+    var roleRecordName = String()
+    var participantID = Int()
     
     var participants = [CKRecord]()
     var participantsWaiting = [CKRecord]()
@@ -33,6 +35,10 @@ class SessionManagementViewController: UITableViewController {
         refresh.addTarget(self, action: #selector(SessionTableViewController.loadData), for: .valueChanged)
         self.tableView.addSubview(refresh)
         
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editRoleGesture(press:)))
+        longPressGesture.minimumPressDuration = 2.0
+        self.tableView.addGestureRecognizer(longPressGesture)
+        
         DispatchQueue.main.async { () -> Void in
             NotificationCenter.default.addObserver(self, selector: #selector(SessionTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
@@ -42,7 +48,6 @@ class SessionManagementViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func setupCloudKitSubscription() {
@@ -153,8 +158,57 @@ class SessionManagementViewController: UITableViewController {
         }
     }
     
-    // MARK: - Table view data source
+    func editRoleGesture(press:UILongPressGestureRecognizer) {
+        if press.state == .began {
+            let pressAlert = UIAlertController(title: "Change Role", message: "Please verify that you want to change this student to a tutor", preferredStyle: .alert)
+            
+            pressAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction) in
+                self.editRole()
+            }))
+            
+            pressAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            self.present(pressAlert, animated: true, completion: nil)
 
+        }
+    }
+    
+    func editRole() {
+        let recordID = CKRecordID(recordName: roleRecordName)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                record?.setObject("tutor" as CKRecordValue, forKey: "role")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated record!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func getAccountRole() {
+        let query = CKQuery(recordType: "Account", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let users = results {
+                for user in users {
+                    let userID = user.object(forKey: "id") as! Int
+                    if userID == self.participantID {
+                        let userRecordID = user.object(forKey: "recordID") as! CKRecordID
+                        self.roleRecordName = userRecordID.recordName
+                    }
+                }
+            }
+        }
+
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -165,6 +219,12 @@ class SessionManagementViewController: UITableViewController {
         } else {
             return participantsNotWaiting.count
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let selectedParticipant = self.participantsNotWaiting[indexPath.row]
+        self.participantID = selectedParticipant["ParticipantID"] as! Int
+        self.getAccountRole()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -195,19 +255,6 @@ class SessionManagementViewController: UITableViewController {
             return cell
         }
     }
- 
-//    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-//        return true
-//    }
-
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        } else if editingStyle == .insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }    
-//    }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let answerAction = UITableViewRowAction.init(style: .normal, title: "Checked") { (action:UITableViewRowAction, indexPath:IndexPath) in

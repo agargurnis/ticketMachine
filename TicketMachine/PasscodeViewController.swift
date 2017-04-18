@@ -118,19 +118,8 @@ class PasscodeViewController: UIViewController {
         clearLbl.isEnabled = true
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        self.navigationController?.setNavigationBarHidden(true, animated: animated)
-//        super.viewWillAppear(animated)
-//    }
-//    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        self.navigationController?.setNavigationBarHidden(false, animated: animated)
-//        super.viewWillDisappear(animated)
-//    } 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         passwordLbl.text = ""
         clearLbl.isEnabled = false
         okLbl.isEnabled = false
@@ -138,7 +127,6 @@ class PasscodeViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

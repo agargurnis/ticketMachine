@@ -51,7 +51,6 @@ class SessionTableViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func setupCloudKitSubscription() {
@@ -220,9 +219,6 @@ class SessionTableViewController: UITableViewController {
         })
     }
     
-    
-    // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
