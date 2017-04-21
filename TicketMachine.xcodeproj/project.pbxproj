@@ -19,6 +19,7 @@
 		BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */; };
 		BAEA7EE21E9D36950072FE51 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */; };
 		BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */; };
+		BAEA7EF31EA77F9D0072FE51 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTableViewController.swift; sourceTree = "<group>"; };
 		BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagementViewController.swift; sourceTree = "<group>"; };
+		BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */,
 				BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */,
 				BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */,
+				BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */,
 				BAA92F5D1E730F3B000E8803 /* Assets.xcassets */,
 				BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */,
 				BAA92F621E730F3B000E8803 /* Info.plist */,
@@ -239,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAEA7EE21E9D36950072FE51 /* LoginViewController.swift in Sources */,
+				BAEA7EF31EA77F9D0072FE51 /* SessionViewController.swift in Sources */,
 				BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */,
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
 				BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */,

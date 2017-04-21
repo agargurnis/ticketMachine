@@ -77,7 +77,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
 
     func loadData() {
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
-        query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: false)]
+        query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let participants = results {

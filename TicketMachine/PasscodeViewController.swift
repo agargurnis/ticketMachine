@@ -89,7 +89,7 @@ class PasscodeViewController: UIViewController {
         let userPass = Int(passString)
 
         if(sessionPass == userPass){
-            performSegue(withIdentifier: "toSessionTable", sender: self)
+            performSegue(withIdentifier: "toSessionView", sender: self)
         } else {
             keypadPasswordArray.removeAll()
             passwordLbl.text = ""
@@ -130,8 +130,8 @@ class PasscodeViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toSessionTable" {
-            if let destinationController = segue.destination as? SessionTableViewController {
+        if segue.identifier == "toSessionView" {
+            if let destinationController = segue.destination as? SessionViewController {
                 destinationController.username = username
                 destinationController.userID = userID
                 destinationController.sessionID = sessionID

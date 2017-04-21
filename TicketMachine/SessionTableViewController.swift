@@ -11,6 +11,8 @@ import CloudKit
 
 class SessionTableViewController: UITableViewController {
     
+    typealias DONE = ()->Void
+    
     let publicData = CKContainer.default().publicCloudDatabase
     var username = String()
     var sessionID = Int()
@@ -96,25 +98,33 @@ class SessionTableViewController: UITableViewController {
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let participants = results {
-                for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
-                    let pSessionID = participant.object(forKey: "SessionID") as! Int
-                    if participantID == self.userID && pSessionID == self.sessionID {
-                        userExists = true
-                        self.getRecordName()
-                        self.helpBtn.isEnabled = true
-                        break
+            guard let participants = results else {
+                return
+            }
+
+            for participant in participants {
+                let participantID = participant.object(forKey: "ParticipantID") as! Int
+                let pSessionID = participant.object(forKey: "SessionID") as! Int
+                if participantID == self.userID && pSessionID == self.sessionID {
+                    userExists = true
+                    self.getRecordName() {
+                        DispatchQueue.main.async {
+                            self.helpBtn.isEnabled = true
+                        }
                     }
-                }
-                if userExists == false {
-                    self.addParticipant()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0, execute: {
-                        self.getRecordName()
-                        self.helpBtn.isEnabled = true
-                    })
+                    break
                 }
             }
+            if userExists == false {
+                self.addParticipant() {
+                    self.getRecordName() {
+                        DispatchQueue.main.async {
+                            self.helpBtn.isEnabled = true
+                        }
+                    }
+                }
+            }
+            
         }
     }
     
@@ -138,7 +148,7 @@ class SessionTableViewController: UITableViewController {
         }
     }
 
-    func addParticipant() {
+    func addParticipant( done : @escaping DONE ) {
         let newParticipant = CKRecord(recordType: "Participant")
         newParticipant["Username"] = username as CKRecordValue?
         newParticipant["ParticipantID"] = userID as CKRecordValue?
@@ -153,6 +163,7 @@ class SessionTableViewController: UITableViewController {
                     let indexPath = NSIndexPath(row: 0, section: 1)
                     self.tableView.insertRows(at: [indexPath as IndexPath], with: UITableViewRowAnimation.top)
                     self.tableView.endUpdates()
+                    done()
                 })
             } else if let e = error {
                 print(e.localizedDescription)
@@ -182,7 +193,7 @@ class SessionTableViewController: UITableViewController {
         })
     }
     
-    func getRecordName() {
+    func getRecordName( done : DONE? ) {
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
