@@ -13,7 +13,7 @@ class PasscodeViewController: UIViewController {
 
     var sessionPass = Int()
     var username = String()
-    var userID = Int()
+    var userID = String()
     var sessionID = Int()
     var sessionName = String()
     

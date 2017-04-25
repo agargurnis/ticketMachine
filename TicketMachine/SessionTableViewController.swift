@@ -16,7 +16,7 @@ class SessionTableViewController: UITableViewController {
     let publicData = CKContainer.default().publicCloudDatabase
     var username = String()
     var sessionID = Int()
-    var userID = Int()
+    var userID = String()
     var myRecordName = String()
     var sessionName = String()
     
@@ -103,7 +103,7 @@ class SessionTableViewController: UITableViewController {
             }
 
             for participant in participants {
-                let participantID = participant.object(forKey: "ParticipantID") as! Int
+                let participantID = participant.object(forKey: "ParticipantID") as! String
                 let pSessionID = participant.object(forKey: "SessionID") as! Int
                 if participantID == self.userID && pSessionID == self.sessionID {
                     userExists = true
@@ -199,7 +199,7 @@ class SessionTableViewController: UITableViewController {
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let participants = results {
                 for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
+                    let participantID = participant.object(forKey: "ParticipantID") as! String
                     let pSessionID = participant.object(forKey: "SessionID") as! Int
                     if participantID == self.userID && pSessionID == self.sessionID {
                         let recordID = participant.value(forKey: "recordID") as! CKRecordID

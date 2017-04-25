@@ -11,11 +11,16 @@ import CloudKit
 import UserNotifications
 
 class TutorTableViewController: UITableViewController, UNUserNotificationCenterDelegate {
+    
+    typealias DONE = ()->Void
+    
+    let publicData = CKContainer.default().publicCloudDatabase
 
+    var sessionNextID = Int()
     var sessions = [CKRecord]()
     var refresh:UIRefreshControl!
     var status = "open"
-
+    let limit = 4
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +40,6 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     func loadData() {
         sessions = [CKRecord]()
         
-        let publicData = CKContainer.default().publicCloudDatabase
         let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
@@ -51,33 +55,51 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         }
     }
     
-    @IBAction func createSession(_ sender: Any) {
-        let sessionAlert = UIAlertController(title: "New Session", message: "Enter Session Details", preferredStyle: .alert)
-        sessionAlert.addTextField { (idField: UITextField) in
-            idField.placeholder = "Session ID"
+    func getLastId( done : @escaping DONE ) {
+        let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let accounts = results {
+                let lastID = accounts.last?.object(forKey: "ID") as! Int
+                self.sessionNextID = lastID + 1
+                done()
+            }
         }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let characterSet = NSCharacterSet.decimalDigits
+        return (string.rangeOfCharacter(from: characterSet) != nil)
+    }
+    
+    @IBAction func createSession(_ sender: Any) {
+        getLastId() {
+            self.newSession()
+        }
+    }
+    
+    func newSession() {
+        let sessionAlert = UIAlertController(title: "New Session", message: "Enter Session Details", preferredStyle: .alert)
         sessionAlert.addTextField { (nameField: UITextField) in
             nameField.placeholder = "Session Name"
         }
         sessionAlert.addTextField { (passcodeField: UITextField) in
-            passcodeField.placeholder = "Session Passcode"
+            passcodeField.placeholder = "4 Digit Session Passcode"
         }
         
         sessionAlert.addAction(UIAlertAction(title: "Create Session", style: .default, handler: { (action: UIAlertAction) in
-            let idField = sessionAlert.textFields?[0]
-            let nameField = sessionAlert.textFields?[1]
-            let passcodeField = sessionAlert.textFields?[2]
+            let nameField = sessionAlert.textFields?[0]
+            let passcodeField = sessionAlert.textFields?[1]
             
-            if idField?.text != "" && nameField?.text != "" && passcodeField?.text != "" {
+            if nameField?.text != "" && passcodeField?.text != "" {
                 let newSession = CKRecord(recordType: "Session")
-                newSession["ID"] = Int((idField?.text!)!) as CKRecordValue?
+                newSession["ID"] = self.sessionNextID as CKRecordValue?
                 newSession["Name"] = nameField?.text as CKRecordValue?
                 newSession["Passcode"] = Int((passcodeField?.text!)!) as CKRecordValue?
                 newSession["Status"] = self.status as CKRecordValue?
                 
-                let publicData = CKContainer.default().publicCloudDatabase
-                
-                publicData.save(newSession, completionHandler: { (record:CKRecord?, error:Error?) in
+                self.publicData.save(newSession, completionHandler: { (record:CKRecord?, error:Error?) in
                     if error == nil {
                         DispatchQueue.main.async(execute: { () -> Void in
                             self.tableView.beginUpdates()

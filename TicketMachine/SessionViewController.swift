@@ -16,7 +16,7 @@ class SessionViewController: UIViewController {
     let publicData = CKContainer.default().publicCloudDatabase
     var username = String()
     var sessionID = Int()
-    var userID = Int()
+    var userID = String()
     var myRecordName = String()
     var myRecordID: CKRecordID!
     var myRecord: CKRecord!
@@ -30,6 +30,7 @@ class SessionViewController: UIViewController {
     @IBOutlet weak var withdrawImg: UIImageView!
     @IBOutlet weak var queueImg: UIImageView!
     var status = "notWaiting"
+    var added = false
     
     var participants = [CKRecord]()
     var participantsWaiting = [CKRecord]()
@@ -81,7 +82,6 @@ class SessionViewController: UIViewController {
     }
     
     func loadData() {
-        print("starting load data")
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
         
@@ -112,7 +112,7 @@ class SessionViewController: UIViewController {
             if let participants = results {
     
                 for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
+                    let participantID = participant.object(forKey: "ParticipantID") as! String
                     let pSessionID = participant.object(forKey: "SessionID") as! Int
                     if participantID == self.userID && pSessionID == self.sessionID {
                         userExists = true
@@ -123,13 +123,13 @@ class SessionViewController: UIViewController {
                         break
                     }
                 }
-                if userExists == false {
+                if userExists == false && self.added == false {
                     self.addParticipant() {
-                        self.getRecordName() {
-                            self.checkHelpStatus()
-                            self.refreshBtn.isEnabled = true
-                        }
+                        self.added = true
+                        self.checkUser()
                     }
+                } else if userExists == false && self.added == true {
+                    self.checkUser()
                 }
             }
         }
@@ -148,7 +148,7 @@ class SessionViewController: UIViewController {
                 case 4:
                     self.queueLbl.text = String(people) + "th"
                 default:
-                    self.queueLbl.text = "kaka"
+                    self.queueLbl.text = "empty"
                 }
             } else {
                 self.queueLbl.text = String(people) + " people"
@@ -247,7 +247,7 @@ class SessionViewController: UIViewController {
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let participants = results {
                 for participant in participants {
-                    let participantID = participant.object(forKey: "ParticipantID") as! Int
+                    let participantID = participant.object(forKey: "ParticipantID") as! String
                     let pSessionID = participant.object(forKey: "SessionID") as! Int
                     if participantID == self.userID && pSessionID == self.sessionID {
                         self.myRecord = participant
@@ -256,8 +256,12 @@ class SessionViewController: UIViewController {
                         DispatchQueue.main.async(execute: { () -> Void in
                             done()
                         })
+                    } else {
+                        // not found
                     }
                 }
+            } else {
+                // no results
             }
         }
     }
@@ -267,9 +271,11 @@ class SessionViewController: UIViewController {
             self.queueImg.image = UIImage(named: "queue")
             self.setQueueLbl(people: self.queuePosition(), waiting: true)
             self.helpBtn.isEnabled = false
-            self.helpImg.image = UIImage(named: "help2")
+            self.helpImg.alpha = 0.2
+            //self.helpImg.image = UIImage(named: "help2")
             self.withdrawBtn.isEnabled = true
-            self.withdrawImg.image = UIImage(named: "withdraw")
+            self.withdrawImg.alpha = 1
+            //self.withdrawImg.image = UIImage(named: "withdraw")
         }
     }
     
@@ -278,9 +284,11 @@ class SessionViewController: UIViewController {
             self.queueImg.image = UIImage(named: "people")
             self.setQueueLbl(people: self.participantsWaiting.count, waiting: false)
             self.helpBtn.isEnabled = true
-            self.helpImg.image = UIImage(named: "help")
+            self.helpImg.alpha = 1
+            //self.helpImg.image = UIImage(named: "help")
             self.withdrawBtn.isEnabled = false
-            self.withdrawImg.image = UIImage(named: "withdraw2")
+            self.withdrawImg.alpha = 0.2
+            //self.withdrawImg.image = UIImage(named: "withdraw2")
         }
     }
     

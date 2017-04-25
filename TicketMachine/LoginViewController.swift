@@ -10,24 +10,37 @@ import UIKit
 import CloudKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
+    
+    typealias DONE = ()->Void
+    
     @IBOutlet weak var segmentController: UISegmentedControl!
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    @IBOutlet weak var idField: UITextField!
     @IBOutlet weak var mainButton: UIButton!
+    @IBOutlet var segmentConstraint: NSLayoutConstraint!
+    @IBOutlet var segmentHeight: NSLayoutConstraint!
+    @IBOutlet weak var registerBtn: UIButton!
+    
+    var userInfoName = String()
+    var userInfoID = String()
+    var userNextID = Int()
     
     let publicData = CKContainer.default().publicCloudDatabase
     var users = [CKRecord]()
 
     var username = String()
     var password = String()
-    var userID = Int()
-    let role = "student"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        iCloudUserInfo { (recordID: CKRecordID?, error: NSError?) in
+            if (recordID?.recordName) != nil {
+                // getting current user info
+            } else {
+                print("Fetched iCloudID was nil")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,18 +59,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func segmentChanged(_ sender: Any) {
+        
         if segmentController.selectedSegmentIndex == 0 {
-            mainButton.setTitle("Login", for: .normal)
-            idField.isHidden = true
-            nameField.text = ""
-            passwordField.text = ""
-            idField.text = ""
+            mainButton.setTitle("Enter As Student", for: .normal)
+            segmentHeight.isActive = false
+            segmentConstraint.isActive = true
+            registerBtn.isHidden = true
+            nameField.isHidden = true
+            passwordField.isHidden = true
         } else if segmentController.selectedSegmentIndex == 1 {
-            mainButton.setTitle("Register", for: .normal)
-            idField.isHidden = false
+            mainButton.setTitle("Login As Tutor", for: .normal)
+            segmentConstraint.isActive = false
+            segmentHeight.isActive = true
+            registerBtn.isHidden = false
+            nameField.isHidden = false
+            passwordField.isHidden = false
             nameField.text = ""
             passwordField.text = ""
-            idField.text = ""
         }
     }
 
@@ -66,49 +84,75 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         password = passwordField.text!
         
         if segmentController.selectedSegmentIndex == 0 {
-            authenticateUser()
+            enterAsStudent()
         } else if segmentController.selectedSegmentIndex == 1 {
-            checkPassword()
+            authenticateUser()
         }
     }
     
-    func checkPassword(){
-        let passAlert = UIAlertController(title: "Password Verification", message: "Please verify password", preferredStyle: .alert)
-        passAlert.addTextField { (passField: UITextField) in
-            passField.isSecureTextEntry = true
-            passField.placeholder = "Password"
-        }
+    func getLastId( done : @escaping DONE ) {
+        let query = CKQuery(recordType: "Account", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
-        passAlert.addAction(UIAlertAction(title: "Verify", style: .default, handler: { (action: UIAlertAction) in
-            let passwordV = passAlert.textFields?.first?.text
-            
-            if passwordV != "" && passwordV == self.password {
-                self.registerUser()
-            } else {
-                self.present(passAlert, animated: true, completion: nil)
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let accounts = results {
+                let lastID = accounts.last?.object(forKey: "ID") as! Int
+                self.userNextID = lastID + 1
+                done()
             }
-        }))
-        
-        passAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        self.present(passAlert, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func register(_ sender: Any) {
+        getLastId() {
+            self.registerUser()
+        }
     }
     
     func registerUser() {
-        let newUser = CKRecord(recordType: "Account")
-        newUser["username"] = username as CKRecordValue?
-        newUser["password"] = password as CKRecordValue?
-        newUser["id"] = Int(idField.text!) as CKRecordValue?
-        newUser["role"] = role as CKRecordValue?
+        let registerAlert = UIAlertController(title: "Create A New Account", message: "Enter Account Details", preferredStyle: .alert)
+        registerAlert.addTextField { (usernameField: UITextField) in
+            usernameField.placeholder = "Username"
+        }
+        registerAlert.addTextField { (userPasswordField: UITextField) in
+            userPasswordField.placeholder = "Password"
+            userPasswordField.isSecureTextEntry = true
+        }
+        registerAlert.addTextField { (passwordCheckField: UITextField) in
+            passwordCheckField.placeholder = "Verify your Password"
+            passwordCheckField.isSecureTextEntry = true
+        }
         
-        publicData.save(newUser, completionHandler: { (record:CKRecord?, error:Error?) in
-            if error == nil {
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.resetView()
-                })
-            } else if let e = error {
-                print(e.localizedDescription)
+        registerAlert.addAction(UIAlertAction(title: "Register", style: .default, handler: { (action: UIAlertAction) in
+            let usernameField = registerAlert.textFields?[0]
+            let userPasswordField = registerAlert.textFields?[1]
+            let passwordCheckField = registerAlert.textFields?[2]
+            
+            if usernameField?.text != "" && userPasswordField?.text != "" {
+                if userPasswordField?.text == passwordCheckField?.text {
+                    let newUser = CKRecord(recordType: "Account")
+                    newUser["ID"] = self.userNextID as CKRecordValue?
+                    newUser["Username"] = usernameField?.text?.lowercased() as CKRecordValue?
+                    newUser["Password"] = userPasswordField?.text as CKRecordValue?
+                    
+                    self.publicData.save(newUser, completionHandler: { (record:CKRecord?, error:Error?) in
+                        if error == nil {
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                self.resetView()
+                            })
+                        } else if let e = error {
+                            print(e.localizedDescription)
+                        }
+                    })
+                } else {
+                    self.registerUser()
+                }
             }
-        })
+        }))
+        
+        registerAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(registerAlert, animated: true, completion: nil)
+
     }
     
     func authenticateUser() {
@@ -117,13 +161,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let users = results {
                 for user in users {
-                    let username = user.object(forKey: "username") as! String
-                    let password = user.object(forKey: "password") as! String
+                    let username = user.object(forKey: "Username") as! String
+                    let password = user.object(forKey: "Password") as! String
                     if self.username == username && self.password == password {
-                        let userRole = user.object(forKey: "role") as! String
-                        self.userID = user.object(forKey: "id") as! Int
                         DispatchQueue.main.async(execute: { () -> Void in
-                            self.loginUser(userRole: userRole)
+                            self.enterAsTutor()
                         })
                     } else {
                         // show fail feedback
@@ -133,23 +175,48 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func loginUser(userRole:String) {
-        if userRole == "student" {
-            performSegue(withIdentifier: "studentSegue", sender: self)
-            nameField.text = ""
-            passwordField.text = ""
-        } else if userRole == "tutor" {
-            performSegue(withIdentifier: "tutorSegue", sender: self)
-            nameField.text = ""
-            passwordField.text = ""
+    func enterAsStudent() {
+        performSegue(withIdentifier: "studentSegue", sender: self)
+    }
+    
+    func enterAsTutor() {
+        performSegue(withIdentifier: "tutorSegue", sender: self)
+        nameField.text = ""
+        passwordField.text = ""
+    }
+
+    func iCloudUserInfo(complete: @escaping ( _ instance: CKRecordID?, _ error: NSError?) -> ()) {
+        let container = CKContainer.default()
+        container.fetchUserRecordID() {
+            recordID, error in
+            if error != nil {
+                print(error!.localizedDescription)
+                complete(nil, error as NSError?)
+            } else {
+                complete(recordID, nil)
+                container.requestApplicationPermission(.userDiscoverability) { (status, permissionError) in
+                    if status == CKApplicationPermissionStatus.granted {
+                        container.discoverUserIdentity(withUserRecordID: recordID!, completionHandler: { (user, error) in
+                            DispatchQueue.main.async(execute: { 
+                                self.userInfoName = (user?.nameComponents?.givenName)! + " " + (user?.nameComponents?.familyName)!
+                                self.userInfoID = (recordID?.recordName)!
+                                self.mainButton.isEnabled = true
+                                self.segmentController.isEnabled = true
+                                self.mainButton.backgroundColor = UIColor(red: 52/255, green: 149/255, blue: 203/255, alpha: 1)
+                                self.mainButton.setTitle("Enter As Student", for: .normal)
+                            })
+                        })
+                    }
+                }
+            }
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "studentSegue" {
             if let destinationController = segue.destination as? StudentTableViewController {
-                destinationController.username = username
-                destinationController.userID = userID
+                destinationController.username = userInfoName
+                destinationController.userID = userInfoID
             }
         }
     }
@@ -161,10 +228,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func resetView() {
         segmentController.selectedSegmentIndex = 0
-        mainButton.setTitle("Login", for: .normal)
-        nameField.text = ""
-        passwordField.text = ""
-        idField.isHidden = true
+        mainButton.setTitle("Enter As Student", for: .normal)
+        segmentHeight.isActive = false
+        segmentConstraint.isActive = true
+        registerBtn.isHidden = true
+        nameField.isHidden = true
+        passwordField.isHidden = true
     }
     
 }

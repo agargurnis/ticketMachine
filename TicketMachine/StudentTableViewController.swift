@@ -12,7 +12,7 @@ import UserNotifications
 
 class StudentTableViewController: UITableViewController, UNUserNotificationCenterDelegate {
     var username = String()
-    var userID = Int()
+    var userID = String()
 
     var sessions = [CKRecord]()
     var refresh:UIRefreshControl!
