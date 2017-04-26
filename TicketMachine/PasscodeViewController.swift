@@ -16,6 +16,8 @@ class PasscodeViewController: UIViewController {
     var userID = String()
     var sessionID = Int()
     var sessionName = String()
+    var whichPasscode = String()
+    var sessionRecordName = String()
     
     var keypadPasswordArray = [Int]()
     
@@ -88,8 +90,10 @@ class PasscodeViewController: UIViewController {
         _ = keypadPasswordArray.map{ passString = passString + "\($0)" }
         let userPass = Int(passString)
 
-        if(sessionPass == userPass){
+        if sessionPass == userPass && whichPasscode == "Student" {
             performSegue(withIdentifier: "toSessionView", sender: self)
+        } else if sessionPass == userPass && whichPasscode == "Tutor" {
+            performSegue(withIdentifier: "toSessionManagementView", sender: self)
         } else {
             keypadPasswordArray.removeAll()
             passwordLbl.text = ""
@@ -136,6 +140,12 @@ class PasscodeViewController: UIViewController {
                 destinationController.userID = userID
                 destinationController.sessionID = sessionID
                 destinationController.sessionName = sessionName
+            }
+        } else if segue.identifier == "toSessionManagementView" {
+            if let destinationController = segue.destination as? SessionManagementViewController {
+                destinationController.sessionID = sessionID
+                destinationController.sessionName = sessionName
+                destinationController.sessionRecordName = sessionRecordName
             }
         }
     }

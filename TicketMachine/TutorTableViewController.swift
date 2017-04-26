@@ -80,23 +80,28 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     }
     
     func newSession() {
-        let sessionAlert = UIAlertController(title: "New Session", message: "Enter Session Details", preferredStyle: .alert)
+        let sessionAlert = UIAlertController(title: "New Session", message: "Enter a Session Name \n and \n a 4 Digit Passcodes", preferredStyle: .alert)
         sessionAlert.addTextField { (nameField: UITextField) in
             nameField.placeholder = "Session Name"
         }
-        sessionAlert.addTextField { (passcodeField: UITextField) in
-            passcodeField.placeholder = "4 Digit Session Passcode"
+        sessionAlert.addTextField { (studentCodeField: UITextField) in
+            studentCodeField.placeholder = "Session Passcode for Students"
+        }
+        sessionAlert.addTextField { (tutorCodeField: UITextField) in
+            tutorCodeField.placeholder = "Session Passcode for Tutors"
         }
         
         sessionAlert.addAction(UIAlertAction(title: "Create Session", style: .default, handler: { (action: UIAlertAction) in
             let nameField = sessionAlert.textFields?[0]
-            let passcodeField = sessionAlert.textFields?[1]
+            let studentCodeField = sessionAlert.textFields?[1]
+            let tutorCodeField = sessionAlert.textFields?[2]
             
-            if nameField?.text != "" && passcodeField?.text != "" {
+            if nameField?.text != "" && studentCodeField?.text != "" {
                 let newSession = CKRecord(recordType: "Session")
                 newSession["ID"] = self.sessionNextID as CKRecordValue?
                 newSession["Name"] = nameField?.text as CKRecordValue?
-                newSession["Passcode"] = Int((passcodeField?.text!)!) as CKRecordValue?
+                newSession["StudentCode"] = Int((studentCodeField?.text!)!) as CKRecordValue?
+                newSession["TutorCode"] = Int((tutorCodeField?.text!)!) as CKRecordValue?
                 newSession["Status"] = self.status as CKRecordValue?
                 
                 self.publicData.save(newSession, completionHandler: { (record:CKRecord?, error:Error?) in
@@ -122,7 +127,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
-        let destination = segue.destination as! SessionManagementViewController
+        let destination = segue.destination as! PasscodeViewController
         
         let selectRecord = sessions[indexPath.row]
         
@@ -130,10 +135,14 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         let sessionID = selectRecord.object(forKey: "ID") as? Int
         let sessionRecordID = selectRecord.object(forKey: "recordID") as! CKRecordID
         let recordName = sessionRecordID.recordName
+        let passcode = selectRecord.object(forKey: "TutorCode") as? Int
+        let whichPasscode = "Tutor"
         
         destination.sessionID = sessionID!
         destination.sessionRecordName = recordName
         destination.sessionName = sessionName!
+        destination.whichPasscode = whichPasscode
+        destination.sessionPass = passcode!
     }
 
     override func didReceiveMemoryWarning() {

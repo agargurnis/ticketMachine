@@ -15,8 +15,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     var sessionID = Int()
     var sessionRecordName = String()
     var sessionName = String()
-    var roleRecordName = String()
-    var participantID = Int()
     
     var participants = [CKRecord]()
     var participantsWaiting = [CKRecord]()
@@ -34,10 +32,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         refresh.attributedTitle = NSAttributedString(string: "Pull to load qustions")
         refresh.addTarget(self, action: #selector(SessionTableViewController.loadData), for: .valueChanged)
         self.tableView.addSubview(refresh)
-        
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editRoleGesture(press:)))
-        longPressGesture.minimumPressDuration = 2.0
-        self.tableView.addGestureRecognizer(longPressGesture)
         
         DispatchQueue.main.async { () -> Void in
             NotificationCenter.default.addObserver(self, selector: #selector(SessionTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
@@ -112,6 +106,10 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         })
     }
     
+    @IBAction func goBack(_ sender: Any) {
+        self.navigationController?.popToViewController((navigationController?.viewControllers[1])!, animated: true)
+    }
+    
     @IBAction func endSession(_ sender: Any) {
     
         let closeAlert = UIAlertController(title: "Close Session", message: "Are you sure you want to close this session?", preferredStyle: .alert)
@@ -158,57 +156,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         }
     }
     
-    func editRoleGesture(press:UILongPressGestureRecognizer) {
-        if press.state == .began {
-            let pressAlert = UIAlertController(title: "Change Role", message: "Please verify that you want to change this student to a tutor", preferredStyle: .alert)
-            
-            pressAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction) in
-                self.editRole()
-            }))
-            
-            pressAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-            self.present(pressAlert, animated: true, completion: nil)
-
-        }
-    }
-    
-    func editRole() {
-        let recordID = CKRecordID(recordName: roleRecordName)
-        
-        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
-            if error == nil {
-                record?.setObject("tutor" as CKRecordValue, forKey: "role")
-                
-                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
-                    if saveError == nil {
-                        print("Successfully updated record!")
-                    } else if let e = saveError {
-                        print(e.localizedDescription)
-                    }
-                })
-            } else if let e = error {
-                print(e.localizedDescription)
-            }
-        })
-    }
-    
-    func getAccountRole() {
-        let query = CKQuery(recordType: "Account", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        
-        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let users = results {
-                for user in users {
-                    let userID = user.object(forKey: "id") as! Int
-                    if userID == self.participantID {
-                        let userRecordID = user.object(forKey: "recordID") as! CKRecordID
-                        self.roleRecordName = userRecordID.recordName
-                    }
-                }
-            }
-        }
-
-    }
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -220,12 +167,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             return participantsNotWaiting.count
         }
     }
-    
-    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        let selectedParticipant = self.participantsNotWaiting[indexPath.row]
-        self.participantID = selectedParticipant["ParticipantID"] as! Int
-        self.getAccountRole()
-    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "participantCell", for: indexPath)
@@ -235,7 +176,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "MM/dd/yyyy HH:mm"
             let dateString = dateFormat.string(from: participantWaiting.modificationDate!)
-            print("waiting")
+            
             cell.textLabel?.text = participantWaiting["Username"] as? String
             cell.detailTextLabel?.text = dateString
             cell.backgroundColor = UIColor(red:206/255, green:74/255, blue:80/255, alpha:1)
@@ -247,7 +188,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "MM/dd/yyyy HH:mm"
             let dateString = dateFormat.string(from: participantNotWaiting.modificationDate!)
-            print("notWaiting")
+            
             cell.textLabel?.text = participantNotWaiting["Username"] as? String
             cell.detailTextLabel?.text = dateString
             cell.backgroundColor = UIColor(red:236/255, green:240/255, blue:241/255, alpha:1)
@@ -259,13 +200,17 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let answerAction = UITableViewRowAction.init(style: .normal, title: "Checked") { (action:UITableViewRowAction, indexPath:IndexPath) in
         
-            let selectedParticipant = self.participantsWaiting[indexPath.row]
-            let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
-            let recordName = participantRecordID.recordName
-            self.checkParticipant(participantRecordName: recordName)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                self.loadData()
-            })
+            if self.participantsWaiting.count != 0 {
+                let selectedParticipant = self.participantsWaiting[indexPath.row]
+                let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
+                let recordName = participantRecordID.recordName
+                self.checkParticipant(participantRecordName: recordName)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                    self.loadData()
+                })
+            } else {
+                print("empty array")
+            }
         }
         
         answerAction.backgroundColor = UIColor(red:9/255, green:154/255, blue:77/255, alpha:1)

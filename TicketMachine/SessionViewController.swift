@@ -102,8 +102,6 @@ class SessionViewController: UIViewController {
         }
     }
     
-    
-    
     func checkUser() {
         var userExists = false
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))

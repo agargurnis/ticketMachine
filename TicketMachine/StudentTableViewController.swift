@@ -86,9 +86,11 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         let selectRecord = sessions[indexPath.row]
         
         let sessionName = selectRecord.object(forKey: "Name") as? String
-        let passcode = selectRecord.object(forKey: "Passcode") as? Int
+        let passcode = selectRecord.object(forKey: "StudentCode") as? Int
         let sessionID = selectRecord.object(forKey: "ID") as? Int
+        let whichPasscode = "Student"
         
+        destination.whichPasscode = whichPasscode
         destination.sessionPass = passcode!
         destination.username = username
         destination.userID = userID
