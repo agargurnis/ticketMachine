@@ -133,6 +133,9 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                     if saveError == nil {
                         print("Successfully closed session!")
                         self.title = "Session Closed"
+                        DispatchQueue.main.async {
+                            self.deleteParticipants()
+                        }
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }
@@ -143,10 +146,23 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         })
     }
     
+    func deleteParticipants() {
+        for particpant in participants {
+            publicData.delete(withRecordID: particpant.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
+                if error == nil {
+                    print("Record Successfully Deleted")
+                } else if let e = error {
+                    print(e.localizedDescription)
+                }
+            })
+        }
+    }
+    
     func sortParticipants() {
         participantsWaiting.removeAll()
         participantsNotWaiting.removeAll()
         for participant in participants {
+            
             let status = participant["Status"] as? String
             if status == "waiting" {
                 self.participantsWaiting.append(participant)
@@ -203,6 +219,20 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             if self.participantsWaiting.count != 0 {
                 let selectedParticipant = self.participantsWaiting[indexPath.row]
                 let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
+                let answerTime = selectedParticipant["HelpTime"] as? Date
+                let now = Date()
+                
+                let formatter = DateComponentsFormatter()
+                formatter.unitsStyle = .full
+                formatter.allowedUnits = [.hour, .minute, .second]
+                let string = formatter.string(from: answerTime!, to: now)
+                
+                let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
+                timeAlert.message?.append(string!)
+                timeAlert.message?.append("\n To Respond To This Help Request.")
+                timeAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(timeAlert, animated: true, completion: nil)
+
                 let recordName = participantRecordID.recordName
                 self.checkParticipant(participantRecordName: recordName)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {

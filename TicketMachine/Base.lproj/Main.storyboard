@@ -562,7 +562,7 @@
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="people" translatesAutoresizingMaskIntoConstraints="NO" id="cwG-EZ-j4T">
-                                <rect key="frame" x="60.5" y="207" width="251" height="253"/>
+                                <rect key="frame" x="60.5" y="206.5" width="251" height="254"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="cwG-EZ-j4T" secondAttribute="height" multiplier="251:253" id="hOb-C7-LGU"/>
                                 </constraints>
@@ -574,7 +574,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 people" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HAs-RE-kvy">
-                                <rect key="frame" x="66" y="290.5" width="240" height="69"/>
+                                <rect key="frame" x="66" y="290.5" width="240.5" height="69"/>
                                 <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldItalicMT" family="Times New Roman" pointSize="62"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -713,7 +713,7 @@
                                 </connections>
                             </textField>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XB1-UW-VmS">
-                                <rect key="frame" x="139" y="693" width="96" height="26"/>
+                                <rect key="frame" x="139.5" y="693" width="96" height="26"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="11"/>
                                 <state key="normal" title="Create an account"/>
                                 <connections>
@@ -882,7 +882,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WtN-vh-WR5">
-                                <rect key="frame" x="71.5" y="70" width="232" height="28"/>
+                                <rect key="frame" x="71.5" y="114" width="232" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

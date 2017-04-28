@@ -194,11 +194,14 @@ class SessionViewController: UIViewController {
     }
     
     func requestHelpFromCloud( done : @escaping DONE ) {
+        
         let recordID = CKRecordID(recordName: myRecordName)
+        let today = Date()
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 record?.setObject("waiting" as CKRecordValue, forKey: "Status")
+                record?.setObject(today as CKRecordValue, forKey: "HelpTime")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
