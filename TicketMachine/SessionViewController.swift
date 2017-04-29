@@ -146,7 +146,7 @@ class SessionViewController: UIViewController {
                 case 4:
                     self.queueLbl.text = String(people) + "th"
                 default:
-                    self.queueLbl.text = "empty"
+                    self.queueLbl.text = ""
                 }
             } else {
                 self.queueLbl.text = String(people) + " people"
@@ -324,6 +324,10 @@ class SessionViewController: UIViewController {
     }
     
     @IBAction func requestHelp(_ sender: Any) {
+        helpImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
+            self.helpImg.transform = CGAffineTransform.identity
+        }, completion: nil)
         requestHelpFromCloud() {            
             self.loadData()
         }
@@ -331,6 +335,10 @@ class SessionViewController: UIViewController {
     }
     
     @IBAction func withdrawHelp(_ sender: Any) {
+        withdrawImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+        UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
+            self.withdrawImg.transform = CGAffineTransform.identity
+        }, completion: nil)
         withdrawHelpFromCloud() {
             self.loadData()
         }
