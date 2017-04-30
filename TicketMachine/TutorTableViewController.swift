@@ -117,6 +117,8 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
                         print(e.localizedDescription)
                     }
                 })
+            } else {
+                self.newSession()
             }
         }))
         

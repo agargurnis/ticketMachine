@@ -83,6 +83,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         username = nameField.text!.lowercased()
         password = passwordField.text!
         
+        if nameField.text == "" && passwordField.text == "" {
+            shake(textField: nameField)
+            shake(textField: passwordField)
+        } else if passwordField.text == "" {
+            shake(textField: passwordField)
+        } else if nameField.text == "" {
+            shake(textField: nameField)
+        }
+        
         if segmentController.selectedSegmentIndex == 0 {
             enterAsStudent()
         } else if segmentController.selectedSegmentIndex == 1 {
@@ -107,6 +116,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         getLastId() {
             self.registerUser()
         }
+    }
+    
+    func shake(textField: UITextField) {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.duration = 0.5
+        animation.values = [-20.0, 20.0, -15.0, 15.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+        textField.layer.add(animation, forKey: "shake")
     }
     
     func registerUser() {

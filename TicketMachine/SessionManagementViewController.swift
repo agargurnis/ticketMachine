@@ -48,10 +48,12 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         let userDefaults = UserDefaults.standard
 
         if userDefaults.bool(forKey: "participantSubscription") == false {
-            let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
-            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
+            //let predicate = NSPredicate(format: ("%K == %@") AND ("%K == %@"), argumentArray: ["SessionID", sessionID])
+            let pred = NSPredicate(format: "(Status == waiting) AND (SessionID = %@)", sessionID)
+            let subscription = CKQuerySubscription(recordType: "Participant", predicate: pred, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             let notificationInfo = CKNotificationInfo()
-            notificationInfo.alertLocalizationKey = "New Question In Session: " + sessionName
+            notificationInfo.alertLocalizationKey = "New Question From: %1$@"
+            notificationInfo.alertLocalizationArgs = ["Username"]
             notificationInfo.shouldBadge = true
 
             subscription.notificationInfo = notificationInfo
