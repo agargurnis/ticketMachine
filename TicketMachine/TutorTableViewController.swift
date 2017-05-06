@@ -10,7 +10,7 @@ import UIKit
 import CloudKit
 import UserNotifications
 
-class TutorTableViewController: UITableViewController, UNUserNotificationCenterDelegate {
+class TutorTableViewController: UITableViewController, UNUserNotificationCenterDelegate, UITextFieldDelegate {
     
     typealias DONE = ()->Void
     
@@ -55,28 +55,8 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         }
     }
     
-    func getLastId( done : @escaping DONE ) {
-        let query = CKQuery(recordType: "Session", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-        
-        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
-            if let accounts = results {
-                let lastID = accounts.last?.object(forKey: "ID") as! Int
-                self.sessionNextID = lastID + 1
-                done()
-            }
-        }
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let characterSet = NSCharacterSet.decimalDigits
-        return (string.rangeOfCharacter(from: characterSet) != nil)
-    }
-    
     @IBAction func createSession(_ sender: Any) {
-        getLastId() {
-            self.newSession()
-        }
+        newSession()
     }
     
     func newSession() {
@@ -86,9 +66,17 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         }
         sessionAlert.addTextField { (studentCodeField: UITextField) in
             studentCodeField.placeholder = "Session Passcode for Students"
+            studentCodeField.keyboardType = .numberPad
+            studentCodeField.delegate = self
+            studentCodeField.addTarget(self, action: #selector(self.checkPasscodeLength(_:)), for: .editingChanged)
+            studentCodeField.addTarget(self, action: #selector(self.textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
         }
         sessionAlert.addTextField { (tutorCodeField: UITextField) in
             tutorCodeField.placeholder = "Session Passcode for Tutors"
+            tutorCodeField.keyboardType = .numberPad
+            tutorCodeField.delegate = self
+            tutorCodeField.addTarget(self, action: #selector(self.checkPasscodeLength(_:)), for: .editingChanged)
+            tutorCodeField.addTarget(self, action: #selector(self.textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
         }
         
         sessionAlert.addAction(UIAlertAction(title: "Create Session", style: .default, handler: { (action: UIAlertAction) in
@@ -98,7 +86,6 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
             
             if nameField?.text != "" && studentCodeField?.text != "" {
                 let newSession = CKRecord(recordType: "Session")
-                newSession["ID"] = self.sessionNextID as CKRecordValue?
                 newSession["Name"] = nameField?.text as CKRecordValue?
                 newSession["StudentCode"] = Int((studentCodeField?.text!)!) as CKRecordValue?
                 newSession["TutorCode"] = Int((tutorCodeField?.text!)!) as CKRecordValue?
@@ -127,6 +114,61 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
 
     }
     
+    
+    func checkPasscodeLength(_ textField: UITextField!) {
+        if (textField.text!.characters.count > 4) {
+            textField.deleteBackward()
+        }
+    }
+    
+    func checkPasscodeDigits(_ textField: UITextField) -> Bool {
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: textField.text!)
+        return allowedCharacters.isSuperset(of: characterSet)
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        return allowedCharacters.isSuperset(of: characterSet)
+    }
+    
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        // allow backspace
+//        if (!string.length)
+//        {
+//            return YES;
+//        }
+//        
+//        // Prevent invalid character input, if keyboard is numberpad
+//        if (textField.keyboardType == UIKeyboardTypeNumberPad)
+//        {
+//            if ([string rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet].invertedSet].location != NSNotFound)
+//            {
+//                // BasicAlert(@"", @"This field accepts only numeric entries.");
+//                return NO;
+//            }
+//        }
+//        
+//        // verify max length has not been exceeded
+//        NSString *proposedText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+//        
+//        if (proposedText.length > 4) // 4 was chosen for SSN verification
+//        {
+//            // suppress the max length message only when the user is typing
+//            // easy: pasted data has a length greater than 1; who copy/pastes one character?
+//            if (string.length > 1)
+//            {
+//                // BasicAlert(@"", @"This field accepts a maximum of 4 characters.");
+//            }
+//            
+//            return NO;
+//        }
+//        
+//        return YES;
+//    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
         let destination = segue.destination as! PasscodeViewController
@@ -134,14 +176,13 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         let selectRecord = sessions[indexPath.row]
         
         let sessionName = selectRecord.object(forKey: "Name") as? String
-        let sessionID = selectRecord.object(forKey: "ID") as? Int
-        let sessionRecordID = selectRecord.object(forKey: "recordID") as! CKRecordID
-        let recordName = sessionRecordID.recordName
+        let sessionRecordID = selectRecord.object(forKey: "recordID") as? CKRecordID
+        let recordName = sessionRecordID?.recordName
         let passcode = selectRecord.object(forKey: "TutorCode") as? Int
         let whichPasscode = "Tutor"
         
-        destination.sessionID = sessionID!
-        destination.sessionRecordName = recordName
+        destination.sessionID = recordName!
+        destination.sessionRecordName = recordName!
         destination.sessionName = sessionName!
         destination.whichPasscode = whichPasscode
         destination.sessionPass = passcode!

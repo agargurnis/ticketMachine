@@ -87,14 +87,14 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
         
         let sessionName = selectRecord.object(forKey: "Name") as? String
         let passcode = selectRecord.object(forKey: "StudentCode") as? Int
-        let sessionID = selectRecord.object(forKey: "ID") as? Int
+        let sessionRecordID = selectRecord.object(forKey: "recordID") as? CKRecordID
         let whichPasscode = "Student"
         
         destination.whichPasscode = whichPasscode
         destination.sessionPass = passcode!
         destination.username = username
         destination.userID = userID
-        destination.sessionID = sessionID!
+        destination.sessionID = sessionRecordID!.recordName
         destination.sessionName = sessionName!
     }
     

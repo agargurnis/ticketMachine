@@ -14,7 +14,7 @@ class PasscodeViewController: UIViewController {
     var sessionPass = Int()
     var username = String()
     var userID = String()
-    var sessionID = Int()
+    var sessionID = String()
     var sessionName = String()
     var whichPasscode = String()
     var sessionRecordName = String()

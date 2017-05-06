@@ -16,7 +16,6 @@
 		BAA92F6C1E730F3B000E8803 /* TicketMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F6B1E730F3B000E8803 /* TicketMachineTests.swift */; };
 		BABEB8C21E957B97000AB2CD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BABEB8C11E957B97000AB2CD /* CloudKit.framework */; };
 		BAD4315F1E96D4B600B4B1DB /* StudentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */; };
-		BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */; };
 		BAEA7EE21E9D36950072FE51 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */; };
 		BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */; };
 		BAEA7EF31EA77F9D0072FE51 /* SessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */; };
@@ -47,7 +46,6 @@
 		BAA92F761E730F4E000E8803 /* TicketMachine.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TicketMachine.entitlements; sourceTree = "<group>"; };
 		BABEB8C11E957B97000AB2CD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTableViewController.swift; sourceTree = "<group>"; };
-		BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionTableViewController.swift; sourceTree = "<group>"; };
 		BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManagementViewController.swift; sourceTree = "<group>"; };
 		BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionViewController.swift; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 				BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */,
 				BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */,
 				BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */,
-				BAD431601E98228B00B4B1DB /* SessionTableViewController.swift */,
 				BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */,
 				BAA92F5D1E730F3B000E8803 /* Assets.xcassets */,
 				BAA92F5F1E730F3B000E8803 /* LaunchScreen.storyboard */,
@@ -247,7 +244,6 @@
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
 				BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */,
 				BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */,
-				BAD431611E98228B00B4B1DB /* SessionTableViewController.swift in Sources */,
 				BAD4315F1E96D4B600B4B1DB /* StudentTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

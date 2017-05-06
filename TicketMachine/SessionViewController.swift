@@ -15,7 +15,7 @@ class SessionViewController: UIViewController {
     
     let publicData = CKContainer.default().publicCloudDatabase
     var username = String()
-    var sessionID = Int()
+    var sessionID = String()
     var userID = String()
     var myRecordName = String()
     var myRecordID: CKRecordID!
@@ -111,7 +111,7 @@ class SessionViewController: UIViewController {
     
                 for participant in participants {
                     let participantID = participant.object(forKey: "ParticipantID") as! String
-                    let pSessionID = participant.object(forKey: "SessionID") as! Int
+                    let pSessionID = participant.object(forKey: "SessionID") as! String
                     if participantID == self.userID && pSessionID == self.sessionID {
                         userExists = true
                         self.getRecordName() {
@@ -249,7 +249,7 @@ class SessionViewController: UIViewController {
             if let participants = results {
                 for participant in participants {
                     let participantID = participant.object(forKey: "ParticipantID") as! String
-                    let pSessionID = participant.object(forKey: "SessionID") as! Int
+                    let pSessionID = participant.object(forKey: "SessionID") as! String
                     if participantID == self.userID && pSessionID == self.sessionID {
                         self.myRecord = participant
                         self.myRecordID = participant.value(forKey: "recordID") as! CKRecordID

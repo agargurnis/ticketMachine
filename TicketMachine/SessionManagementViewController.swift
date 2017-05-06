@@ -12,7 +12,7 @@ import CloudKit
 class SessionManagementViewController: UITableViewController, UIGestureRecognizerDelegate {
     
     let publicData = CKContainer.default().publicCloudDatabase
-    var sessionID = Int()
+    var sessionID = String()
     var sessionRecordName = String()
     var sessionName = String()
     
@@ -30,11 +30,11 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         
         refresh = UIRefreshControl()
         refresh.attributedTitle = NSAttributedString(string: "Pull to load qustions")
-        refresh.addTarget(self, action: #selector(SessionTableViewController.loadData), for: .valueChanged)
+        refresh.addTarget(self, action: #selector(SessionManagementViewController.loadData), for: .valueChanged)
         self.tableView.addSubview(refresh)
         
         DispatchQueue.main.async { () -> Void in
-            NotificationCenter.default.addObserver(self, selector: #selector(SessionTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(SessionManagementViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
         
         setupCloudKitSubscription()
@@ -48,9 +48,8 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         let userDefaults = UserDefaults.standard
 
         if userDefaults.bool(forKey: "participantSubscription") == false {
-            //let predicate = NSPredicate(format: ("%K == %@") AND ("%K == %@"), argumentArray: ["SessionID", sessionID])
-            let pred = NSPredicate(format: "(Status == waiting) AND (SessionID = %@)", sessionID)
-            let subscription = CKQuerySubscription(recordType: "Participant", predicate: pred, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
+            let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
+            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             let notificationInfo = CKNotificationInfo()
             notificationInfo.alertLocalizationKey = "New Question From: %1$@"
             notificationInfo.alertLocalizationArgs = ["Username"]
