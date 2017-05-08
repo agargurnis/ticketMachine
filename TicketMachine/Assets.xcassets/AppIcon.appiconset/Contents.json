@@ -50,8 +50,9 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "20x20",
+      "idiom" : "ipad",
+      "filename" : "mobileicon-4.png",
       "scale" : "2x"
     },
     {
@@ -60,8 +61,9 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "29x29",
+      "idiom" : "ipad",
+      "filename" : "mobileicon-5.png",
       "scale" : "2x"
     },
     {
@@ -70,8 +72,9 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "mobileicon-7.png",
       "scale" : "2x"
     },
     {
@@ -80,13 +83,15 @@
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "76x76",
+      "idiom" : "ipad",
+      "filename" : "mobileicon-6.png",
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "mobileicon-8.png",
       "scale" : "2x"
     }
   ],

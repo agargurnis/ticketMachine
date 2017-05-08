@@ -161,7 +161,7 @@ class PasscodeViewController: UIViewController {
                 destinationController.username = username
             }
         } else if segue.identifier == "toSessionStatisticsView" {
-            if let destinationController = segue.destination as? SessionManagementViewController {
+            if let destinationController = segue.destination as? SessionStatisticViewController {
                 destinationController.sessionID = sessionID
                 destinationController.sessionName = sessionName
                 destinationController.sessionRecordName = sessionRecordName

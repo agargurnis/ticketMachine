@@ -366,6 +366,16 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         })
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toSessionStatisticsView" {
+            if let destinationController = segue.destination as? SessionStatisticViewController {
+                destinationController.sessionID = sessionID
+                destinationController.sessionName = sessionName
+                destinationController.sessionRecordName = sessionRecordName
+            }
+        }
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }

@@ -170,7 +170,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Close" id="6V2-QZ-tpZ">
                             <connections>
                                 <action selector="endSession:" destination="BGe-H5-DGH" id="0l6-qK-ThB"/>
-                                <segue destination="Ckf-nA-Jy6" kind="show" id="hao-t0-1O4"/>
+                                <segue destination="Ckf-nA-Jy6" kind="show" identifier="toSessionStatisticsView" id="hao-t0-1O4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -399,7 +399,7 @@
                                     <constraint firstAttribute="width" secondItem="I6p-v1-CYc" secondAttribute="height" multiplier="129:128" id="Ipa-sh-ATM"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 people" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HAs-RE-kvy">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 people" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HAs-RE-kvy">
                                 <rect key="frame" x="66" y="290.5" width="240.5" height="69"/>
                                 <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldItalicMT" family="Times New Roman" pointSize="62"/>
                                 <nil key="textColor"/>
@@ -769,7 +769,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="participantCell" textLabel="jqO-SR-6ie" detailTextLabel="JkY-PL-e5k" style="IBUITableViewCellStyleSubtitle" id="bRV-Kv-qNn">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="statCell" textLabel="jqO-SR-6ie" style="IBUITableViewCellStyleDefault" id="bRV-Kv-qNn">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bRV-Kv-qNn" id="SAK-cG-n8o">
@@ -777,16 +777,9 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jqO-SR-6ie">
-                                            <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JkY-PL-e5k">
-                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -821,6 +814,6 @@
         <image name="withdraw" width="1000" height="1000"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qC3-af-zm3"/>
+        <segue reference="hao-t0-1O4"/>
     </inferredMetricsTieBreakers>
 </document>
