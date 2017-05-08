@@ -29,34 +29,7 @@ class StudentTableViewController: UITableViewController, UNUserNotificationCente
             NotificationCenter.default.addObserver(self, selector: #selector(StudentTableViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
         
-        setupCloudKitSubscription()
         loadData()
-    }
-    
-    func setupCloudKitSubscription() {
-        let userDefaults = UserDefaults.standard
-        
-        if userDefaults.bool(forKey: "subscribedForNewSessions") == false {
-            let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
-            let subscription = CKQuerySubscription(recordType: "Session", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
-            let notificationInfo = CKNotificationInfo()
-            notificationInfo.alertLocalizationKey = "New Session"
-            notificationInfo.shouldBadge = true
-            
-            subscription.notificationInfo = notificationInfo
-            
-            let publicData = CKContainer.default().publicCloudDatabase
-            
-            publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
-                if let e = error {
-                    print(e.localizedDescription)
-                } else {
-                    userDefaults.set(true, forKey: "subscribedForNewSessions")
-                    userDefaults.synchronize()
-                }
-            }
-        }
-        
     }
     
     func loadData() {

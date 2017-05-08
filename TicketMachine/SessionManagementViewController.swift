@@ -11,11 +11,18 @@ import CloudKit
 
 class SessionManagementViewController: UITableViewController, UIGestureRecognizerDelegate {
     
+    typealias DONE = ()->Void
+    
     let publicData = CKContainer.default().publicCloudDatabase
     var sessionID = String()
     var sessionRecordName = String()
     var sessionName = String()
+    var username = String()
+    var tutorRecordName = String()
+    var started = false
     
+    var tutorRecord: CKRecord!
+    var tutors = [CKRecord]()
     var participants = [CKRecord]()
     var participantsWaiting = [CKRecord]()
     var participantsNotWaiting = [CKRecord]()
@@ -37,6 +44,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             NotificationCenter.default.addObserver(self, selector: #selector(SessionManagementViewController.loadData), name: NSNotification.Name(rawValue: "performReload"), object: nil)
         }
         
+        checkTutor()
         setupCloudKitSubscription()
     }
 
@@ -49,10 +57,10 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
 
         if userDefaults.bool(forKey: "participantSubscription") == false {
             let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
-            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
+            let subscription = CKQuerySubscription(recordType: "Request", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordCreation)
             let notificationInfo = CKNotificationInfo()
             notificationInfo.alertLocalizationKey = "New Question From: %1$@"
-            notificationInfo.alertLocalizationArgs = ["Username"]
+            notificationInfo.alertLocalizationArgs = ["Requester"]
             notificationInfo.shouldBadge = true
 
             subscription.notificationInfo = notificationInfo
@@ -71,6 +79,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     }
 
     func loadData() {
+        loadTutorData()
         let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
         
@@ -129,6 +138,8 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 record?.setObject("closed" as CKRecordValue, forKey: "Status")
+                record?.setObject(self.participants.count as CKRecordValue, forKey: "NoParticipants")
+                record?.setObject(self.tutors.count as CKRecordValue, forKey: "NoTutors")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
@@ -173,6 +184,148 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         }
     }
     
+    func checkTutor() {
+        var tutorExists = false
+        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let tutors = results {
+                for tutor in tutors {
+                    let username = tutor.object(forKey: "Username") as! String
+                    let sessionID = tutor.object(forKey: "SessionID") as! String
+                    if username == self.username && sessionID == self.sessionID {
+                        tutorExists = true
+                        let tutorID = tutor.object(forKey: "recordID") as! CKRecordID
+                        self.tutorRecordName = tutorID.recordName
+                    }
+                }
+                if tutorExists == false {
+                    self.addTutor() {
+                        DispatchQueue.main.async {
+                            self.loadTutorData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    
+    func addTutor( done : @escaping DONE ) {
+        let newTutor = CKRecord(recordType: "Tutor")
+        newTutor["Username"] = username as CKRecordValue?
+        newTutor["SessionID"] = sessionID as CKRecordValue?
+        
+        publicData.save(newTutor, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                print("Seccesssfully added a new tutor")
+                done()
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func loadTutorData() {
+        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let tutors = results {
+                self.tutors = tutors
+                for tutor in tutors {
+                    let username = tutor.object(forKey: "Username") as! String
+                    let sessionID = tutor.object(forKey: "SessionID") as! String
+                    if username == self.username && sessionID == self.sessionID {
+                        self.tutorRecord = tutor
+                        let tutorID = tutor.object(forKey: "recordID") as! CKRecordID
+                        self.tutorRecordName = tutorID.recordName
+                        print("done")
+                    }
+                }
+            }
+        }
+    }
+    
+    func addResponseTime(responseTime: Int) {
+        let recordID = CKRecordID(recordName: sessionRecordName)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var currentResponseTime = Int()
+                if record?.object(forKey: "ResponseTimes") as? Int == nil {
+                    currentResponseTime = 0
+                } else {
+                    currentResponseTime = record?.object(forKey: "WaitTimes") as! Int
+                }
+                
+                let newTime = currentResponseTime + responseTime
+                record?.setObject(newTime as CKRecordValue, forKey: "WaitTimes")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated responseTimes!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func addWaitTime(waitTime: Int) {
+        let recordID = CKRecordID(recordName: sessionRecordName)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var currentWaitTime = Int()
+                if record?.object(forKey: "WaitTimes") as? Int == nil {
+                    currentWaitTime = 0
+                } else {
+                    currentWaitTime = record?.object(forKey: "WaitTimes") as! Int
+                }
+                
+                let newTime = currentWaitTime + waitTime
+                record?.setObject(newTime as CKRecordValue, forKey: "WaitTimes")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated waitTimes!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func startResponse( done : @escaping DONE ) {
+        
+        let recordID = CKRecordID(recordName: tutorRecordName)
+        let now = Date()
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                record?.setObject(now as CKRecordValue, forKey: "ResponseTime")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully added response time!")
+                        done()
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -215,37 +368,83 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let answerAction = UITableViewRowAction.init(style: .normal, title: "Checked") { (action:UITableViewRowAction, indexPath:IndexPath) in
-        
-            if self.participantsWaiting.count != 0 {
-                let selectedParticipant = self.participantsWaiting[indexPath.row]
-                let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
-                let answerTime = selectedParticipant["HelpTime"] as? Date
-                let now = Date()
-                
-                let formatter = DateComponentsFormatter()
-                formatter.unitsStyle = .full
-                formatter.allowedUnits = [.hour, .minute, .second]
-                let string = formatter.string(from: answerTime!, to: now)
-                
-                let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
-                timeAlert.message?.append(string!)
-                timeAlert.message?.append("\n To Respond To This Help Request.")
-                timeAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                self.present(timeAlert, animated: true, completion: nil)
-
-                let recordName = participantRecordID.recordName
-                self.checkParticipant(participantRecordName: recordName)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                    self.loadData()
-                })
+        if tutorRecordName != "" {
+            if started == false {
+                let startAction = UITableViewRowAction.init(style: .normal, title: "Check") { (action:UITableViewRowAction, indexPath:IndexPath) in
+                    
+                    if self.participantsWaiting.count != 0 {
+                        let selectedParticipant = self.participantsWaiting[indexPath.row]
+                        let checkTime = selectedParticipant["HelpTime"] as? Date
+                        let now = Date()
+                        
+                        let seconds = now.timeIntervalSince(checkTime!)
+                        let checkDuration = Int(seconds)
+                        self.addWaitTime(waitTime: checkDuration)
+                        self.startResponse() {
+                            self.loadData()
+                        }
+                        
+                        let formatter = DateComponentsFormatter()
+                        formatter.unitsStyle = .full
+                        formatter.allowedUnits = [.hour, .minute, .second]
+                        let timeString = formatter.string(from: checkTime!, to: now)
+                        
+                        let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
+                        timeAlert.message?.append(timeString!)
+                        timeAlert.message?.append("\n To Respond To This Help Request.")
+                        timeAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(timeAlert, animated: true, completion: nil)
+                        self.started = true
+                    } else {
+                        print("empty array")
+                    }
+                }
+                startAction.backgroundColor = UIColor(red:242/255, green:214/255, blue:25/255, alpha:1)
+                return [startAction]
             } else {
-                print("empty array")
+                let finishAction = UITableViewRowAction.init(style: .normal, title: "Finish") { (action:UITableViewRowAction, indexPath:IndexPath) in
+                    
+                    if self.participantsWaiting.count != 0 {
+                        let selectedParticipant = self.participantsWaiting[indexPath.row]
+                        let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
+                        let responseTime = self.tutorRecord["ResponseTime"] as? Date
+                        let now = Date()
+                        
+                        let seconds = now.timeIntervalSince(responseTime!)
+                        let responseDuration = Int(seconds)
+                        self.addResponseTime(responseTime: responseDuration)
+                        
+                        let formatter = DateComponentsFormatter()
+                        formatter.unitsStyle = .full
+                        formatter.allowedUnits = [.hour, .minute, .second]
+                        let timeString = formatter.string(from: responseTime!, to: now)
+                        
+                        let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
+                        timeAlert.message?.append(timeString!)
+                        timeAlert.message?.append("\n To Answer To This Help Request.")
+                        timeAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(timeAlert, animated: true, completion: nil)
+                        
+                        let recordName = participantRecordID.recordName
+                        self.checkParticipant(participantRecordName: recordName)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                            self.loadData()
+                        })
+                        self.started = false
+                    } else {
+                        print("empty array")
+                    }
+                }
+                finishAction.backgroundColor = UIColor(red:9/255, green:154/255, blue:77/255, alpha:1)
+                return [finishAction]
             }
+        } else {
+            loadTutorData()
+            let waitAction = UITableViewRowAction.init(style: .normal, title: "Loading", handler: { (action:UITableViewRowAction, indexPath:IndexPath) in
+                // waiting
+            })
+            waitAction.backgroundColor = UIColor(red:85/255, green:97/255, blue:112/255, alpha:1)
+            return [waitAction]
         }
-        
-        answerAction.backgroundColor = UIColor(red:9/255, green:154/255, blue:77/255, alpha:1)
-        return [answerAction]
     }
-
 }

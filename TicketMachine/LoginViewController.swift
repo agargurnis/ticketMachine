@@ -235,6 +235,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 destinationController.username = userInfoName
                 destinationController.userID = userInfoID
             }
+        } else if segue.identifier == "tutorSegue" {
+            if let destinationController = segue.destination as? TutorTableViewController {
+                destinationController.username = username
+            }
         }
     }
     

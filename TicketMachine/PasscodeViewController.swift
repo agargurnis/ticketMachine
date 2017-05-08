@@ -18,6 +18,7 @@ class PasscodeViewController: UIViewController {
     var sessionName = String()
     var whichPasscode = String()
     var sessionRecordName = String()
+    var sessionStatus = String()
     
     var keypadPasswordArray = [Int]()
     
@@ -92,8 +93,10 @@ class PasscodeViewController: UIViewController {
 
         if sessionPass == userPass && whichPasscode == "Student" {
             performSegue(withIdentifier: "toSessionView", sender: self)
-        } else if sessionPass == userPass && whichPasscode == "Tutor" {
+        } else if sessionPass == userPass && whichPasscode == "Tutor" && sessionStatus == "open" {
             performSegue(withIdentifier: "toSessionManagementView", sender: self)
+        } else if sessionPass == userPass && whichPasscode == "Tutor" && sessionStatus == "closed" {
+            performSegue(withIdentifier: "toSessionStatisticsView", sender: self)
         } else {
             keypadPasswordArray.removeAll()
             passwordLbl.text = ""
@@ -151,6 +154,13 @@ class PasscodeViewController: UIViewController {
                 destinationController.sessionName = sessionName
             }
         } else if segue.identifier == "toSessionManagementView" {
+            if let destinationController = segue.destination as? SessionManagementViewController {
+                destinationController.sessionID = sessionID
+                destinationController.sessionName = sessionName
+                destinationController.sessionRecordName = sessionRecordName
+                destinationController.username = username
+            }
+        } else if segue.identifier == "toSessionStatisticsView" {
             if let destinationController = segue.destination as? SessionManagementViewController {
                 destinationController.sessionID = sessionID
                 destinationController.sessionName = sessionName

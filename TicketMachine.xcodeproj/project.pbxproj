@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */; };
+		BA1A4EED1EBFDD2B0013018B /* SessionStatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1A4EEC1EBFDD2B0013018B /* SessionStatisticViewController.swift */; };
 		BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46B7081E96C0E700357227 /* TutorTableViewController.swift */; };
 		BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F561E730F3B000E8803 /* AppDelegate.swift */; };
 		BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5A1E730F3B000E8803 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeViewController.swift; sourceTree = "<group>"; };
+		BA1A4EEC1EBFDD2B0013018B /* SessionStatisticViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionStatisticViewController.swift; sourceTree = "<group>"; };
 		BA46B7081E96C0E700357227 /* TutorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorTableViewController.swift; sourceTree = "<group>"; };
 		BAA92F531E730F3B000E8803 /* TicketMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA92F561E730F3B000E8803 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				BAD4315E1E96D4B600B4B1DB /* StudentTableViewController.swift */,
 				BAA92F5A1E730F3B000E8803 /* Main.storyboard */,
 				BAEA7EEE1EA138F50072FE51 /* SessionManagementViewController.swift */,
+				BA1A4EEC1EBFDD2B0013018B /* SessionStatisticViewController.swift */,
 				BAEA7EE11E9D36950072FE51 /* LoginViewController.swift */,
 				BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */,
 				BAEA7EF21EA77F9D0072FE51 /* SessionViewController.swift */,
@@ -240,6 +243,7 @@
 			files = (
 				BAEA7EE21E9D36950072FE51 /* LoginViewController.swift in Sources */,
 				BAEA7EF31EA77F9D0072FE51 /* SessionViewController.swift in Sources */,
+				BA1A4EED1EBFDD2B0013018B /* SessionStatisticViewController.swift in Sources */,
 				BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */,
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
 				BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */,

@@ -16,6 +16,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     
     let publicData = CKContainer.default().publicCloudDatabase
 
+    var username = String()
     var sessionNextID = Int()
     var sessions = [CKRecord]()
     var refresh:UIRefreshControl!
@@ -60,7 +61,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     }
     
     func newSession() {
-        let sessionAlert = UIAlertController(title: "New Session", message: "Enter a Session Name \n and \n a 4 Digit Passcodes", preferredStyle: .alert)
+        let sessionAlert = UIAlertController(title: "New Session", message: "Enter a Session Name \n and a \n 4 Digit Passcodes", preferredStyle: .alert)
         sessionAlert.addTextField { (nameField: UITextField) in
             nameField.placeholder = "Session Name"
         }
@@ -134,41 +135,6 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         return allowedCharacters.isSuperset(of: characterSet)
     }
     
-//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-//        // allow backspace
-//        if (!string.length)
-//        {
-//            return YES;
-//        }
-//        
-//        // Prevent invalid character input, if keyboard is numberpad
-//        if (textField.keyboardType == UIKeyboardTypeNumberPad)
-//        {
-//            if ([string rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet].invertedSet].location != NSNotFound)
-//            {
-//                // BasicAlert(@"", @"This field accepts only numeric entries.");
-//                return NO;
-//            }
-//        }
-//        
-//        // verify max length has not been exceeded
-//        NSString *proposedText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-//        
-//        if (proposedText.length > 4) // 4 was chosen for SSN verification
-//        {
-//            // suppress the max length message only when the user is typing
-//            // easy: pasted data has a length greater than 1; who copy/pastes one character?
-//            if (string.length > 1)
-//            {
-//                // BasicAlert(@"", @"This field accepts a maximum of 4 characters.");
-//            }
-//            
-//            return NO;
-//        }
-//        
-//        return YES;
-//    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var indexPath: IndexPath = self.tableView.indexPathForSelectedRow!
         let destination = segue.destination as! PasscodeViewController
@@ -176,12 +142,15 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         let selectRecord = sessions[indexPath.row]
         
         let sessionName = selectRecord.object(forKey: "Name") as? String
+        let sessionStatus = selectRecord.object(forKey: "Status") as? String
         let sessionRecordID = selectRecord.object(forKey: "recordID") as? CKRecordID
         let recordName = sessionRecordID?.recordName
         let passcode = selectRecord.object(forKey: "TutorCode") as? Int
         let whichPasscode = "Tutor"
         
+        destination.username = username
         destination.sessionID = recordName!
+        destination.sessionStatus = sessionStatus!
         destination.sessionRecordName = recordName!
         destination.sessionName = sessionName!
         destination.whichPasscode = whichPasscode

@@ -21,6 +21,9 @@ class SessionViewController: UIViewController {
     var myRecordID: CKRecordID!
     var myRecord: CKRecord!
     var sessionName = String()
+    var myRequestRecordID: CKRecordID!
+    var myRequestRecordName = String()
+    var recordExists = false
     
     @IBOutlet weak var refreshBtn: UIBarButtonItem!
     @IBOutlet weak var withdrawBtn: UIButton!
@@ -190,7 +193,38 @@ class SessionViewController: UIViewController {
                 print(e.localizedDescription)
             }
         })
+    }
+    
+    func addRequest() {
+        let newRequest = CKRecord(recordType: "Request")
+        newRequest["SessionID"] = sessionID as CKRecordValue
+        newRequest["Requester"] = username as CKRecordValue
         
+        publicData.save(newRequest, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                print("record added successfully")
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func removeRequest() {
+        let query = CKQuery(recordType: "Request", predicate: NSPredicate(format: "%K == %@", argumentArray: ["Requester", username]))
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let requests = results {
+                for request in requests {
+                    self.publicData.delete(withRecordID: request.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
+                        if error == nil {
+                            print("Record Successfully Deleted Request")
+                        } else if let e = error {
+                            print(e.localizedDescription)
+                        }
+                    })
+                }
+            }
+        }
     }
     
     func requestHelpFromCloud( done : @escaping DONE ) {
@@ -206,6 +240,7 @@ class SessionViewController: UIViewController {
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully requested help!")
+                        self.addRequest()
                         DispatchQueue.main.async(execute: { () -> Void in
                             done()
                         })
@@ -229,6 +264,7 @@ class SessionViewController: UIViewController {
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully withdrawn request!")
+                        self.removeRequest()
                         DispatchQueue.main.async(execute: { () -> Void in
                             done()
                         })
@@ -273,10 +309,8 @@ class SessionViewController: UIViewController {
             self.setQueueLbl(people: self.queuePosition(), waiting: true)
             self.helpBtn.isEnabled = false
             self.helpImg.alpha = 0.2
-            //self.helpImg.image = UIImage(named: "help2")
             self.withdrawBtn.isEnabled = true
             self.withdrawImg.alpha = 1
-            //self.withdrawImg.image = UIImage(named: "withdraw")
         }
     }
     
@@ -286,10 +320,8 @@ class SessionViewController: UIViewController {
             self.setQueueLbl(people: self.participantsWaiting.count, waiting: false)
             self.helpBtn.isEnabled = true
             self.helpImg.alpha = 1
-            //self.helpImg.image = UIImage(named: "help")
             self.withdrawBtn.isEnabled = false
             self.withdrawImg.alpha = 0.2
-            //self.withdrawImg.image = UIImage(named: "withdraw2")
         }
     }
     
@@ -324,6 +356,7 @@ class SessionViewController: UIViewController {
     }
     
     @IBAction func requestHelp(_ sender: Any) {
+        helpBtn.isEnabled = false
         helpImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.helpImg.transform = CGAffineTransform.identity
@@ -335,6 +368,7 @@ class SessionViewController: UIViewController {
     }
     
     @IBAction func withdrawHelp(_ sender: Any) {
+        withdrawBtn.isEnabled = false
         withdrawImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.withdrawImg.transform = CGAffineTransform.identity
