@@ -106,6 +106,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully updated record!")
+                        self.addNoResponses()
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }
@@ -147,6 +148,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         self.title = "Session Closed"
                         DispatchQueue.main.async {
                             self.deleteParticipants()
+                            self.deleteTutors()
                         }
                     } else if let e = saveError {
                         print(e.localizedDescription)
@@ -162,7 +164,19 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         for particpant in participants {
             publicData.delete(withRecordID: particpant.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
                 if error == nil {
-                    print("Record Successfully Deleted")
+                    print("Record Successfully Deleted Participants")
+                } else if let e = error {
+                    print(e.localizedDescription)
+                }
+            })
+        }
+    }
+    
+    func deleteTutors() {
+        for tutor in tutors {
+            publicData.delete(withRecordID: tutor.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
+                if error == nil {
+                    print("Record Successfully Deleted Tutors")
                 } else if let e = error {
                     print(e.localizedDescription)
                 }
@@ -239,27 +253,26 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         self.tutorRecord = tutor
                         let tutorID = tutor.object(forKey: "recordID") as! CKRecordID
                         self.tutorRecordName = tutorID.recordName
-                        print("done")
                     }
                 }
             }
         }
     }
     
-    func addResponseTime(responseTime: Int) {
+    func addResponseTime(responseTime: String) {
         let recordID = CKRecordID(recordName: sessionRecordName)
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
-                var currentResponseTime = Int()
-                if record?.object(forKey: "ResponseTimes") as? Int == nil {
-                    currentResponseTime = 0
+                var timeArray = [String]()
+                if record?.object(forKey: "ResponseArray") as? [String] == nil {
+                    timeArray.append(responseTime)
                 } else {
-                    currentResponseTime = record?.object(forKey: "WaitTimes") as! Int
+                    timeArray = record?.object(forKey: "ResponseArray") as! [String]
+                    timeArray.append(responseTime)
                 }
                 
-                let newTime = currentResponseTime + responseTime
-                record?.setObject(newTime as CKRecordValue, forKey: "WaitTimes")
+                record?.setObject(timeArray as CKRecordValue, forKey: "ResponseArray")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
@@ -274,20 +287,20 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         })
     }
     
-    func addWaitTime(waitTime: Int) {
+    func addWaitTime(waitTime: String) {
         let recordID = CKRecordID(recordName: sessionRecordName)
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
-                var currentWaitTime = Int()
-                if record?.object(forKey: "WaitTimes") as? Int == nil {
-                    currentWaitTime = 0
+                var timeArray = [String]()
+                if record?.object(forKey: "WaitArray") as? [String] == nil {
+                    timeArray.append(waitTime)
                 } else {
-                    currentWaitTime = record?.object(forKey: "WaitTimes") as! Int
+                    timeArray = record?.object(forKey: "WaitArray") as! [String]
+                    timeArray.append(waitTime)
                 }
                 
-                let newTime = currentWaitTime + waitTime
-                record?.setObject(newTime as CKRecordValue, forKey: "WaitTimes")
+                record?.setObject(timeArray as CKRecordValue, forKey: "WaitArray")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
@@ -325,6 +338,33 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         })
     }
 
+    func addNoResponses() {
+        let recordID = CKRecordID(recordName: sessionRecordName)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var noResponses = Int()
+                if record?.object(forKey: "NoResponses") as? Int == nil {
+                    noResponses = 1
+                } else {
+                    noResponses = record?.object(forKey: "NoResponses") as! Int
+                    noResponses += 1
+                }
+                
+                record?.setObject(noResponses as CKRecordValue, forKey: "NoResponses")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated responses int!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -374,20 +414,18 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                     
                     if self.participantsWaiting.count != 0 {
                         let selectedParticipant = self.participantsWaiting[indexPath.row]
-                        let checkTime = selectedParticipant["HelpTime"] as? Date
+                        let checkTime = selectedParticipant["WaitTime"] as? Date
                         let now = Date()
-                        
-                        let seconds = now.timeIntervalSince(checkTime!)
-                        let checkDuration = Int(seconds)
-                        self.addWaitTime(waitTime: checkDuration)
-                        self.startResponse() {
-                            self.loadData()
-                        }
                         
                         let formatter = DateComponentsFormatter()
                         formatter.unitsStyle = .full
                         formatter.allowedUnits = [.hour, .minute, .second]
                         let timeString = formatter.string(from: checkTime!, to: now)
+                        
+                        self.addWaitTime(waitTime: timeString!)
+                        self.startResponse() {
+                            self.loadData()
+                        }
                         
                         let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
                         timeAlert.message?.append(timeString!)
@@ -410,14 +448,12 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         let responseTime = self.tutorRecord["ResponseTime"] as? Date
                         let now = Date()
                         
-                        let seconds = now.timeIntervalSince(responseTime!)
-                        let responseDuration = Int(seconds)
-                        self.addResponseTime(responseTime: responseDuration)
-                        
                         let formatter = DateComponentsFormatter()
                         formatter.unitsStyle = .full
                         formatter.allowedUnits = [.hour, .minute, .second]
                         let timeString = formatter.string(from: responseTime!, to: now)
+                        
+                        self.addResponseTime(responseTime: timeString!)
                         
                         let timeAlert = UIAlertController(title: "It Took You..", message: "", preferredStyle: .alert)
                         timeAlert.message?.append(timeString!)
@@ -427,7 +463,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         
                         let recordName = participantRecordID.recordName
                         self.checkParticipant(participantRecordName: recordName)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                        DispatchQueue.main.async(execute: {
                             self.loadData()
                         })
                         self.started = false

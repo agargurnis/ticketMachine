@@ -195,6 +195,62 @@ class SessionViewController: UIViewController {
         })
     }
     
+    func addNoHelpRequest() {
+        let recordID = CKRecordID(recordName: sessionID)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var noRequests = Int()
+                if record?.object(forKey: "NoHelpRequests") as? Int == nil {
+                    noRequests = 1
+                } else {
+                    noRequests = record?.object(forKey: "NoHelpRequests") as! Int
+                    noRequests += 1
+                }
+                
+                record?.setObject(noRequests as CKRecordValue, forKey: "NoHelpRequests")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated help reuqests int!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func addNoWithdraws() {
+        let recordID = CKRecordID(recordName: sessionID)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var noWithdraws = Int()
+                if record?.object(forKey: "NoWithdraws") as? Int == nil {
+                    noWithdraws = 1
+                } else {
+                    noWithdraws = record?.object(forKey: "NoWithdraws") as! Int
+                    noWithdraws += 1
+                }
+                
+                record?.setObject(noWithdraws as CKRecordValue, forKey: "NoWithdraws")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated withdraws int!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
     func addRequest() {
         let newRequest = CKRecord(recordType: "Request")
         newRequest["SessionID"] = sessionID as CKRecordValue
@@ -203,6 +259,7 @@ class SessionViewController: UIViewController {
         publicData.save(newRequest, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 print("record added successfully")
+                self.addNoHelpRequest()
             } else if let e = error {
                 print(e.localizedDescription)
             }
@@ -218,6 +275,7 @@ class SessionViewController: UIViewController {
                     self.publicData.delete(withRecordID: request.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
                         if error == nil {
                             print("Record Successfully Deleted Request")
+                            self.addNoWithdraws()
                         } else if let e = error {
                             print(e.localizedDescription)
                         }
@@ -230,12 +288,12 @@ class SessionViewController: UIViewController {
     func requestHelpFromCloud( done : @escaping DONE ) {
         
         let recordID = CKRecordID(recordName: myRecordName)
-        let today = Date()
+        let now = Date()
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 record?.setObject("waiting" as CKRecordValue, forKey: "Status")
-                record?.setObject(today as CKRecordValue, forKey: "HelpTime")
+                record?.setObject(now as CKRecordValue, forKey: "WaitTime")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
