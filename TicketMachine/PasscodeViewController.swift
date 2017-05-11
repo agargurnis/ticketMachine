@@ -17,7 +17,6 @@ class PasscodeViewController: UIViewController {
     var sessionID = String()
     var sessionName = String()
     var whichPasscode = String()
-    var sessionRecordName = String()
     var sessionStatus = String()
     
     var keypadPasswordArray = [Int]()
@@ -128,13 +127,29 @@ class PasscodeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         passwordLbl.text = ""
         clearLbl.isEnabled = false
         okLbl.isEnabled = false
+        
+        loadSessionStatus()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func loadSessionStatus() {
+        let publicData = CKContainer.default().publicCloudDatabase
+        let recordID = CKRecordID(recordName: sessionID)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                self.sessionStatus = record?.object(forKey: "Status") as! String
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
     }
     
     func shake() {
@@ -157,14 +172,14 @@ class PasscodeViewController: UIViewController {
             if let destinationController = segue.destination as? SessionManagementViewController {
                 destinationController.sessionID = sessionID
                 destinationController.sessionName = sessionName
-                destinationController.sessionRecordName = sessionRecordName
+                destinationController.sessionRecordName = sessionID
                 destinationController.username = username
             }
         } else if segue.identifier == "toSessionStatisticsView" {
             if let destinationController = segue.destination as? SessionStatisticViewController {
                 destinationController.sessionID = sessionID
                 destinationController.sessionName = sessionName
-                destinationController.sessionRecordName = sessionRecordName
+                destinationController.sessionRecordName = sessionID
             }
         }
     }

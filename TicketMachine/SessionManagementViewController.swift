@@ -149,6 +149,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         DispatchQueue.main.async {
                             self.deleteParticipants()
                             self.deleteTutors()
+                            self.performSegue(withIdentifier: "toSessionStatisticsView", sender: self)
                         }
                     } else if let e = saveError {
                         print(e.localizedDescription)
@@ -215,9 +216,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 }
                 if tutorExists == false {
                     self.addTutor() {
-                        DispatchQueue.main.async {
-                            self.loadTutorData()
-                        }
+                        self.loadTutorData()
                     }
                 }
             }
@@ -233,7 +232,10 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         publicData.save(newTutor, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 print("Seccesssfully added a new tutor")
-                done()
+                DispatchQueue.main.async {
+                    self.addNoTutors()
+                    done()
+                }
             } else if let e = error {
                 print(e.localizedDescription)
             }
@@ -328,6 +330,34 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                     if saveError == nil {
                         print("Successfully added response time!")
                         done()
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
+                })
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func addNoTutors() {
+        let recordID = CKRecordID(recordName: sessionRecordName)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var noTutors = Int()
+                if record?.object(forKey: "NoTutors") as? Int == nil {
+                    noTutors = 1
+                } else {
+                    noTutors = record?.object(forKey: "NoTutors") as! Int
+                    noTutors += 1
+                }
+                
+                record?.setObject(noTutors as CKRecordValue, forKey: "NoTutors")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated responses int!")
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }

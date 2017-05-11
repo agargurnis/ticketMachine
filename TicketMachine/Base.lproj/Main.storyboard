@@ -170,11 +170,13 @@
                         <barButtonItem key="rightBarButtonItem" title="Close" id="6V2-QZ-tpZ">
                             <connections>
                                 <action selector="endSession:" destination="BGe-H5-DGH" id="0l6-qK-ThB"/>
-                                <segue destination="Ckf-nA-Jy6" kind="show" identifier="toSessionStatisticsView" id="hao-t0-1O4"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="Ckf-nA-Jy6" kind="show" identifier="toSessionStatisticsView" id="vEw-Jy-hLk"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i4R-8K-vv4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -814,6 +816,6 @@
         <image name="withdraw" width="1000" height="1000"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hao-t0-1O4"/>
+        <segue reference="vEw-Jy-hLk"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -142,7 +142,6 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         let selectRecord = sessions[indexPath.row]
         
         let sessionName = selectRecord.object(forKey: "Name") as? String
-        let sessionStatus = selectRecord.object(forKey: "Status") as? String
         let sessionRecordID = selectRecord.object(forKey: "recordID") as? CKRecordID
         let recordName = sessionRecordID?.recordName
         let passcode = selectRecord.object(forKey: "TutorCode") as? Int
@@ -150,8 +149,6 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
         
         destination.username = username
         destination.sessionID = recordName!
-        destination.sessionStatus = sessionStatus!
-        destination.sessionRecordName = recordName!
         destination.sessionName = sessionName!
         destination.whichPasscode = whichPasscode
         destination.sessionPass = passcode!

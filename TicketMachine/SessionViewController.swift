@@ -67,9 +67,14 @@ class SessionViewController: UIViewController {
     func setupCloudKitSubscription() {
         let userDefaults = UserDefaults.standard
         
-        if userDefaults.bool(forKey: "sessionSub") == false {
-            let predicate = NSPredicate(format: "TRUEPREDICATE", argumentArray: nil)
-            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options:  [CKQuerySubscriptionOptions.firesOnRecordUpdate, CKQuerySubscriptionOptions.firesOnRecordCreation])
+        if userDefaults.bool(forKey: "queueSubscription") == false {
+            let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
+            let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
+            let notificationInfo = CKNotificationInfo()
+            notificationInfo.alertBody = "You've moved a step forward in the queue"
+            notificationInfo.soundName = "default"
+            
+            subscription.notificationInfo = notificationInfo
             
             let publicData = CKContainer.default().publicCloudDatabase
             
@@ -77,7 +82,7 @@ class SessionViewController: UIViewController {
                 if let e = error {
                     print(e.localizedDescription)
                 } else {
-                    userDefaults.set(true, forKey: "sessionSub")
+                    userDefaults.set(true, forKey: "queueSubscription")
                     userDefaults.synchronize()
                 }
             }
@@ -97,10 +102,9 @@ class SessionViewController: UIViewController {
                         self.participantsWaiting.append(participant)
                     }
                 }
-
-                DispatchQueue.main.async(execute: {
-                    self.checkHelpStatus()
-                })
+            }
+            DispatchQueue.main.async {
+                self.checkHelpStatus()
             }
         }
     }
@@ -186,8 +190,37 @@ class SessionViewController: UIViewController {
         
         publicData.save(newParticipant, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
+                    self.addNoParticipants()
                     done()
+                }
+            } else if let e = error {
+                print(e.localizedDescription)
+            }
+        })
+    }
+    
+    func addNoParticipants() {
+        let recordID = CKRecordID(recordName: sessionID)
+        
+        publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
+            if error == nil {
+                var noParticipants = Int()
+                if record?.object(forKey: "NoParticipants") as? Int == nil {
+                    noParticipants = 1
+                } else {
+                    noParticipants = record?.object(forKey: "NoParticipants") as! Int
+                    noParticipants += 1
+                }
+                
+                record?.setObject(noParticipants as CKRecordValue, forKey: "NoParticipants")
+                
+                self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
+                    if saveError == nil {
+                        print("Successfully updated responses int!")
+                    } else if let e = saveError {
+                        print(e.localizedDescription)
+                    }
                 })
             } else if let e = error {
                 print(e.localizedDescription)
@@ -286,7 +319,6 @@ class SessionViewController: UIViewController {
     }
     
     func requestHelpFromCloud( done : @escaping DONE ) {
-        
         let recordID = CKRecordID(recordName: myRecordName)
         let now = Date()
         
@@ -299,9 +331,9 @@ class SessionViewController: UIViewController {
                     if saveError == nil {
                         print("Successfully requested help!")
                         self.addRequest()
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async {
                             done()
-                        })
+                        }
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }
@@ -323,9 +355,9 @@ class SessionViewController: UIViewController {
                     if saveError == nil {
                         print("Successfully withdrawn request!")
                         self.removeRequest()
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async {
                             done()
-                        })
+                        }
                     } else if let e = saveError {
                         print(e.localizedDescription)
                     }
@@ -401,7 +433,7 @@ class SessionViewController: UIViewController {
     }
     
     func queuePosition() -> Int {
-        var positionInQueue: Int
+        var positionInQueue = Int()
         
         let indexOfParticipant = findRecordIndex(records: participantsWaiting, record: myRecord)
         if indexOfParticipant != nil {

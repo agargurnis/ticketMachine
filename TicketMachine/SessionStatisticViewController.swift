@@ -156,44 +156,54 @@ class SessionStatisticViewController: UITableViewController {
         
         if indexPath.section == 0 {
             if noTutors == 1 {
-                cell.textLabel?.text = "There was " + String(noTutors) + " tutor in this session"
+                //cell.textLabel?.text = "There was " + String(noTutors) + " tutor in this session"
+                cell.textLabel?.text = String(noTutors)
             } else {
-                cell.textLabel?.text = "There was " + String(noTutors) + " tutors in this session"
+                //cell.textLabel?.text = "There was " + String(noTutors) + " tutors in this session"
+                cell.textLabel?.text = String(noTutors)
             }
             return cell
             
         } else if indexPath.section == 1 {
             if noParticipants == 1 {
-                cell.textLabel?.text = "There was " + String(noParticipants) + " participant in this session"
+                //cell.textLabel?.text = "There was " + String(noParticipants) + " participant in this session"
+                cell.textLabel?.text = String(noParticipants)
             } else {
-                cell.textLabel?.text = "There was " + String(noParticipants) + " participants in this session"
+                //cell.textLabel?.text = "There was " + String(noParticipants) + " participants in this session"
+                cell.textLabel?.text = String(noParticipants)
             }
             
             return cell
             
         } else if indexPath.section == 2 {
             if noHelpRequests == 1 {
-                cell.textLabel?.text = String(noHelpRequests) + " time help was requested in this session"
+                //cell.textLabel?.text = String(noHelpRequests) + " time help was requested in this session"
+                cell.textLabel?.text = String(noHelpRequests)
             } else {
-                cell.textLabel?.text = String(noHelpRequests) + " times help was requested in this session"
+                //cell.textLabel?.text = String(noHelpRequests) + " times help was requested in this session"
+                cell.textLabel?.text = String(noHelpRequests)
             }
             
             return cell
             
         } else if indexPath.section == 3 {
             if noResponses == 1 {
-                cell.textLabel?.text = String(noResponses) + " help request got successfully answered"
+                //cell.textLabel?.text = String(noResponses) + " help request got successfully answered"
+                cell.textLabel?.text = String(noResponses)
             } else {
-                cell.textLabel?.text = String(noResponses) + " help requests got successfully answered"
+                //cell.textLabel?.text = String(noResponses) + " help requests got successfully answered"
+                cell.textLabel?.text = String(noResponses)
             }
             
             return cell
             
         } else if indexPath.section == 4 {
             if noWithdraws == 1 {
-                cell.textLabel?.text = String(noWithdraws) + " help request got withdrawn"
+                //cell.textLabel?.text = String(noWithdraws) + " help request got withdrawn"
+                cell.textLabel?.text = String(noWithdraws) 
             } else {
-                cell.textLabel?.text = String(noWithdraws) + " help requests got withdrawn"
+                //cell.textLabel?.text = String(noWithdraws) + " help requests got withdrawn"
+                cell.textLabel?.text = String(noWithdraws)
             }
             
             return cell

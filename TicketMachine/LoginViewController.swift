@@ -80,7 +80,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
 
     @IBAction func buttonClicked(_ sender: Any) {
-        username = nameField.text!.lowercased()
+        username = nameField.text!.lowercased().trimmingCharacters(in: .whitespaces)
         password = passwordField.text!
         
         if nameField.text == "" && passwordField.text == "" {
@@ -107,7 +107,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if let accounts = results {
                 let lastID = accounts.last?.object(forKey: "ID") as! Int
                 self.userNextID = lastID + 1
-                done()
+                DispatchQueue.main.async {
+                    done()
+                }
             }
         }
     }
@@ -124,6 +126,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         animation.duration = 0.5
         animation.values = [-20.0, 20.0, -15.0, 15.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
         textField.layer.add(animation, forKey: "shake")
+    }
+    
+    func shakeScreen() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        animation.duration = 0.5
+        animation.values = [-20.0, 20.0, -15.0, 15.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+        view.layer.add(animation, forKey: "shake")
     }
     
     func registerUser() {
@@ -145,7 +155,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             let userPasswordField = registerAlert.textFields?[1]
             let passwordCheckField = registerAlert.textFields?[2]
             
-            if usernameField?.text != "" && userPasswordField?.text != "" {
+            if usernameField?.text != "" || userPasswordField?.text != "" {
                 if userPasswordField?.text == passwordCheckField?.text {
                     let newUser = CKRecord(recordType: "Account")
                     newUser["ID"] = self.userNextID as CKRecordValue?
@@ -163,7 +173,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     })
                 } else {
                     self.registerUser()
+                    self.shakeScreen()
                 }
+            } else {
+                self.registerUser()
+                self.shakeScreen()
             }
         }))
         
@@ -173,6 +187,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func authenticateUser() {
+        var authenticated = false
         let query = CKQuery(recordType: "Account", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
@@ -181,11 +196,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     let username = user.object(forKey: "Username") as! String
                     let password = user.object(forKey: "Password") as! String
                     if self.username == username && self.password == password {
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        authenticated = true
+                        DispatchQueue.main.async {
                             self.enterAsTutor()
-                        })
-                    } else {
-                        // show fail feedback
+                        }
+                    }
+                }
+                if authenticated == false {
+                    DispatchQueue.main.async {
+                        self.shake(textField: self.passwordField)
+                        self.passwordField.text = ""
                     }
                 }
             }
