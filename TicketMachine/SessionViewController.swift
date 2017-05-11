@@ -450,11 +450,11 @@ class SessionViewController: UIViewController {
         helpImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.helpImg.transform = CGAffineTransform.identity
-        }, completion: nil)
-        requestHelpFromCloud() {            
-            self.loadData()
+        }) { (_ : Bool) -> Void in
+            self.requestHelpFromCloud() {
+                self.loadData()
+            }
         }
-        
     }
     
     @IBAction func withdrawHelp(_ sender: Any) {
@@ -462,11 +462,11 @@ class SessionViewController: UIViewController {
         withdrawImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.withdrawImg.transform = CGAffineTransform.identity
-        }, completion: nil)
-        withdrawHelpFromCloud() {
-            self.loadData()
+        })  { (_ : Bool) -> Void in
+            self.withdrawHelpFromCloud() {
+                self.loadData()
+            }
         }
-        
     }
 
 }
