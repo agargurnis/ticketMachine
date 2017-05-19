@@ -472,7 +472,6 @@ class SessionViewController: UIViewController {
                 self.loadData()
             }
         }
-        
     }
 
 }
