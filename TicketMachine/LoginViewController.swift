@@ -120,6 +120,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func encryptPassword(myPassword: String) -> String {
+        let key = "mysuperawesome32characterkeyring"
+        
+        let encrypted = AES256CBC.encryptString(myPassword, password: key)
+        
+        return encrypted!
+    }
+    
+    func decryptPassword(myPassword: String) -> String {
+        let key = "mysuperawesome32characterkeyring"
+    
+        let decrypted = AES256CBC.decryptString(myPassword, password: key)
+    
+        return decrypted!
+    }
+    
     func shake(textField: UITextField) {
         let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
@@ -160,7 +176,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     let newUser = CKRecord(recordType: "Account")
                     newUser["ID"] = self.userNextID as CKRecordValue?
                     newUser["Username"] = usernameField?.text?.lowercased() as CKRecordValue?
-                    newUser["Password"] = userPasswordField?.text as CKRecordValue?
+                    newUser["Password"] = self.encryptPassword(myPassword: userPasswordField!.text!) as CKRecordValue?
                     
                     self.publicData.save(newUser, completionHandler: { (record:CKRecord?, error:Error?) in
                         if error == nil {
@@ -195,7 +211,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 for user in users {
                     let username = user.object(forKey: "Username") as! String
                     let password = user.object(forKey: "Password") as! String
-                    if self.username == username && self.password == password {
+                    if self.username == username && self.password == self.decryptPassword(myPassword: password) {
                         authenticated = true
                         DispatchQueue.main.async {
                             self.enterAsTutor()

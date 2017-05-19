@@ -139,8 +139,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 record?.setObject("closed" as CKRecordValue, forKey: "Status")
-                record?.setObject(self.participants.count as CKRecordValue, forKey: "NoParticipants")
-                record?.setObject(self.tutors.count as CKRecordValue, forKey: "NoTutors")
                 
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
@@ -201,7 +199,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     
     func checkTutor() {
         var tutorExists = false
-        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let tutors = results {
@@ -217,6 +215,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 if tutorExists == false {
                     self.addTutor() {
                         self.loadTutorData()
+                        self.addNoTutors()
                     }
                 }
             }
@@ -233,7 +232,6 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
             if error == nil {
                 print("Seccesssfully added a new tutor")
                 DispatchQueue.main.async {
-                    self.addNoTutors()
                     done()
                 }
             } else if let e = error {
@@ -243,7 +241,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     }
     
     func loadTutorData() {
-        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
+        let query = CKQuery(recordType: "Tutor", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let tutors = results {

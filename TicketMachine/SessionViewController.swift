@@ -68,11 +68,14 @@ class SessionViewController: UIViewController {
         let userDefaults = UserDefaults.standard
         
         if userDefaults.bool(forKey: "queueSubscription") == false {
+            //let predicate = NSPredicate(format: "%K == %@ AND %K == %@", argumentArray: ["SessionID", sessionID, "Status", "notWaiting"])
+            //let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
             let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             let notificationInfo = CKNotificationInfo()
-            notificationInfo.alertBody = "You've moved a step forward in the queue"
-            notificationInfo.soundName = "default"
+            //notificationInfo.alertBody = "You've moved a step forward in the queue"
+            //notificationInfo.soundName = "default"
+            notificationInfo.shouldBadge = true
             
             subscription.notificationInfo = notificationInfo
             
@@ -103,6 +106,7 @@ class SessionViewController: UIViewController {
                     }
                 }
             }
+            
             DispatchQueue.main.async {
                 self.checkHelpStatus()
             }
@@ -111,8 +115,7 @@ class SessionViewController: UIViewController {
     
     func checkUser() {
         var userExists = false
-        let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "TRUEPREDICATE", argumentArray: nil))
-        
+        let query = CKQuery(recordType: "Participant", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
             if let participants = results {
     
@@ -132,6 +135,7 @@ class SessionViewController: UIViewController {
                     self.addParticipant() {
                         self.added = true
                         self.checkUser()
+                        self.addNoParticipants()
                     }
                 } else if userExists == false && self.added == true {
                     self.checkUser()
@@ -191,7 +195,6 @@ class SessionViewController: UIViewController {
         publicData.save(newParticipant, completionHandler: { (record:CKRecord?, error:Error?) in
             if error == nil {
                 DispatchQueue.main.async {
-                    self.addNoParticipants()
                     done()
                 }
             } else if let e = error {
@@ -394,9 +397,10 @@ class SessionViewController: UIViewController {
     }
     
     func waitingUI() {
+        let positionInQueue = queuePosition()
         DispatchQueue.main.async {
             self.queueImg.image = UIImage(named: "queue")
-            self.setQueueLbl(people: self.queuePosition(), waiting: true)
+            self.setQueueLbl(people: positionInQueue, waiting: true)
             self.helpBtn.isEnabled = false
             self.helpImg.alpha = 0.2
             self.withdrawBtn.isEnabled = true
@@ -422,11 +426,12 @@ class SessionViewController: UIViewController {
         
         for participant in records {
             let currentRecordID = participant.recordID
-            
+        
             if recordID == currentRecordID {
                 index = i
                 break
             }
+            
             i += 1
         }
         return index
@@ -450,11 +455,11 @@ class SessionViewController: UIViewController {
         helpImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.helpImg.transform = CGAffineTransform.identity
-        }, completion: nil)
-        requestHelpFromCloud() {            
-            self.loadData()
+        }) { (_ : Bool) -> Void in
+            self.requestHelpFromCloud() {
+                self.loadData()
+            }
         }
-        
     }
     
     @IBAction func withdrawHelp(_ sender: Any) {
@@ -462,9 +467,10 @@ class SessionViewController: UIViewController {
         withdrawImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.withdrawImg.transform = CGAffineTransform.identity
-        }, completion: nil)
-        withdrawHelpFromCloud() {
-            self.loadData()
+        }) { (_ : Bool) -> Void in
+            self.withdrawHelpFromCloud() {
+                self.loadData()
+            }
         }
         
     }

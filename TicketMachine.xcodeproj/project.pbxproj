@@ -10,6 +10,7 @@
 		BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */; };
 		BA1A4EED1EBFDD2B0013018B /* SessionStatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1A4EEC1EBFDD2B0013018B /* SessionStatisticViewController.swift */; };
 		BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46B7081E96C0E700357227 /* TutorTableViewController.swift */; };
+		BA7871221ECC758C009C15A5 /* AES256CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7871211ECC758C009C15A5 /* AES256CBC.swift */; };
 		BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA92F561E730F3B000E8803 /* AppDelegate.swift */; };
 		BAA92F5C1E730F3B000E8803 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5A1E730F3B000E8803 /* Main.storyboard */; };
 		BAA92F5E1E730F3B000E8803 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAA92F5D1E730F3B000E8803 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 		BA191A641E9AD75F0070BADF /* PasscodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasscodeViewController.swift; sourceTree = "<group>"; };
 		BA1A4EEC1EBFDD2B0013018B /* SessionStatisticViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionStatisticViewController.swift; sourceTree = "<group>"; };
 		BA46B7081E96C0E700357227 /* TutorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorTableViewController.swift; sourceTree = "<group>"; };
+		BA7871211ECC758C009C15A5 /* AES256CBC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AES256CBC.swift; sourceTree = "<group>"; };
 		BAA92F531E730F3B000E8803 /* TicketMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAA92F561E730F3B000E8803 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAA92F5B1E730F3B000E8803 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -72,6 +74,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BA7871201ECC758C009C15A5 /* AES256CBC */ = {
+			isa = PBXGroup;
+			children = (
+				BA7871211ECC758C009C15A5 /* AES256CBC.swift */,
+			);
+			name = AES256CBC;
+			path = Sources;
+			sourceTree = "<group>";
+		};
 		BAA92F4A1E730F3A000E8803 = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +105,7 @@
 		BAA92F551E730F3B000E8803 /* TicketMachine */ = {
 			isa = PBXGroup;
 			children = (
+				BA7871201ECC758C009C15A5 /* AES256CBC */,
 				BAA92F761E730F4E000E8803 /* TicketMachine.entitlements */,
 				BAA92F561E730F3B000E8803 /* AppDelegate.swift */,
 				BA46B7081E96C0E700357227 /* TutorTableViewController.swift */,
@@ -245,6 +257,7 @@
 				BAEA7EF31EA77F9D0072FE51 /* SessionViewController.swift in Sources */,
 				BA1A4EED1EBFDD2B0013018B /* SessionStatisticViewController.swift in Sources */,
 				BA46B7091E96C0E700357227 /* TutorTableViewController.swift in Sources */,
+				BA7871221ECC758C009C15A5 /* AES256CBC.swift in Sources */,
 				BAA92F571E730F3B000E8803 /* AppDelegate.swift in Sources */,
 				BAEA7EEF1EA138F50072FE51 /* SessionManagementViewController.swift in Sources */,
 				BA191A651E9AD75F0070BADF /* PasscodeViewController.swift in Sources */,
@@ -390,7 +403,7 @@
 				CODE_SIGN_ENTITLEMENTS = TicketMachine/TicketMachine.entitlements;
 				DEVELOPMENT_TEAM = 83PC9N4FF4;
 				INFOPLIST_FILE = TicketMachine/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -405,7 +418,7 @@
 				CODE_SIGN_ENTITLEMENTS = TicketMachine/TicketMachine.entitlements;
 				DEVELOPMENT_TEAM = 83PC9N4FF4;
 				INFOPLIST_FILE = TicketMachine/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Orion-G.TicketMachine";
 				PRODUCT_NAME = "$(TARGET_NAME)";

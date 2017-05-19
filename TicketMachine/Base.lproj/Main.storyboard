@@ -801,6 +801,11 @@
                                 <action selector="goBack:" destination="Ckf-nA-Jy6" id="JEB-cB-oUV"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="F6r-3y-rLn">
+                            <connections>
+                                <action selector="shareStatistics:" destination="Ckf-nA-Jy6" id="JF1-lk-P91"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>

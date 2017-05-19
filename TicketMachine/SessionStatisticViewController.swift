@@ -104,7 +104,58 @@ class SessionStatisticViewController: UITableViewController {
                 print(e.localizedDescription)
             }
         })
-
+    }
+    
+    func buildStatisticalString() -> String {
+        var theString = ""
+        
+        let stringNoTutors = String(noTutors)
+        let stringNoParticipants = String(noParticipants)
+        let stringNoHelpRequests = String(noHelpRequests)
+        let stringNoWithdraws = String(noWithdraws)
+        let stringNoResponses = String(noResponses)
+        
+        theString = "In this session there were " + stringNoTutors + " tutors and " + stringNoParticipants + " participants. "
+        + "There were " + stringNoHelpRequests + " help requests and " + stringNoResponses + " of them got successfully responded to by the tutor but " + stringNoWithdraws + " were withdrawn."
+        
+        return theString
+    }
+    
+    func respondArrayStrings() -> String {
+        var respondString = ""
+        
+//        for string in responseTimes {
+//            respondString += "\n " + string
+//        }
+        for i in 1 ... responseTimes.count {
+            respondString += "\n (" + String(i) + ") " + responseTimes[i-1]
+        }
+        
+        let theString = "\n The following times show how quickly the tutor managed to answer the help request: " + respondString
+        
+        return theString
+    }
+    
+    func waitArrayStrings() -> String {
+        var waitString = ""
+        
+//        for string in waitTimes {
+//            waitString += "\n " + string
+//        }
+        for i in 1 ... waitTimes.count {
+            waitString += "\n (" + String(i) + ") " + waitTimes[i-1]
+        }
+        
+        let theString = "\n The following times show how long the participant had to wait until the tutor got the opportunity to see him: " + waitString
+        
+        return theString
+    }
+    
+    @IBAction func shareStatistics(_ sender: Any) {
+        let activityController = UIActivityViewController(activityItems: [buildStatisticalString(), waitArrayStrings(), respondArrayStrings()], applicationActivities: nil)
+        
+        activityController.popoverPresentationController?.sourceView = self.view
+        self.present(activityController, animated: true, completion: nil)
     }
     
     @IBAction func goBack(_ sender: Any) {
