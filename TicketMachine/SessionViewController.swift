@@ -97,20 +97,40 @@ class SessionViewController: UIViewController {
         query.sortDescriptors = [NSSortDescriptor(key: "modificationDate", ascending: true)]
         
         publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            
             if let participants = results {
                 self.participantsWaiting.removeAll()
+                var unsortedArray = [CKRecord]()
                 for participant in participants {
                     let participantStatus = participant.object(forKey: "Status") as? String
                     if participantStatus == "waiting" {
-                        self.participantsWaiting.append(participant)
+                        unsortedArray.append(participant)
                     }
                 }
+                self.participantsWaiting = self.sortData(recordArray: unsortedArray)
             }
             
             DispatchQueue.main.async {
                 self.checkHelpStatus()
             }
         }
+    }
+    
+    func sortData(recordArray: [CKRecord]) -> [CKRecord] {
+        guard recordArray.count > 1 else { return recordArray }
+        
+        var sortedArray = recordArray
+        
+        for i in stride(from: 1, to: recordArray.count, by: 1) {
+            let modDate1 = sortedArray[i].object(forKey: "modificationDate") as! Date
+            let modDate2 = sortedArray[i-1].object(forKey: "modificationDate") as! Date
+            if modDate1.timeIntervalSince1970 < modDate2.timeIntervalSince1970 {
+                let temp = sortedArray[i]
+                sortedArray[i] = sortedArray[i-1]
+                sortedArray[i-1] = temp
+            }
+        }
+        return sortedArray
     }
     
     func checkUser() {
@@ -159,6 +179,8 @@ class SessionViewController: UIViewController {
                 default:
                     self.queueLbl.text = ""
                 }
+            } else if waiting == false && people == 1{
+                self.queueLbl.text = String(people) + " person"
             } else {
                 self.queueLbl.text = String(people) + " people"
             }
@@ -397,10 +419,9 @@ class SessionViewController: UIViewController {
     }
     
     func waitingUI() {
-        let positionInQueue = queuePosition()
         DispatchQueue.main.async {
             self.queueImg.image = UIImage(named: "queue")
-            self.setQueueLbl(people: positionInQueue, waiting: true)
+            self.setQueueLbl(people: self.queuePosition(), waiting: true)
             self.helpBtn.isEnabled = false
             self.helpImg.alpha = 0.2
             self.withdrawBtn.isEnabled = true
@@ -410,7 +431,11 @@ class SessionViewController: UIViewController {
     
     func notWaitingUI() {
         DispatchQueue.main.async {
-            self.queueImg.image = UIImage(named: "people")
+            if self.participantsWaiting.count == 1 {
+                self.queueImg.image = UIImage(named: "person")
+            } else {
+                self.queueImg.image = UIImage(named: "people")
+            }
             self.setQueueLbl(people: self.participantsWaiting.count, waiting: false)
             self.helpBtn.isEnabled = true
             self.helpImg.alpha = 1
@@ -467,7 +492,7 @@ class SessionViewController: UIViewController {
         withdrawImg.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 1, initialSpringVelocity: 6, options: .allowUserInteraction, animations: {
             self.withdrawImg.transform = CGAffineTransform.identity
-        }) { (_ : Bool) -> Void in
+        })  { (_ : Bool) -> Void in
             self.withdrawHelpFromCloud() {
                 self.loadData()
             }
