@@ -68,18 +68,12 @@ class SessionViewController: UIViewController {
         let userDefaults = UserDefaults.standard
         
         if userDefaults.bool(forKey: "queueSubscription") == false {
-            //let predicate = NSPredicate(format: "%K == %@ AND %K == %@", argumentArray: ["SessionID", sessionID, "Status", "notWaiting"])
-            //let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             let predicate = NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID])
             let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
+            
             let notificationInfo = CKNotificationInfo()
-            //notificationInfo.alertBody = "You've moved a step forward in the queue"
-            //notificationInfo.soundName = "default"
             notificationInfo.shouldBadge = true
-            
             subscription.notificationInfo = notificationInfo
-            
-            let publicData = CKContainer.default().publicCloudDatabase
             
             publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
                 if let e = error {

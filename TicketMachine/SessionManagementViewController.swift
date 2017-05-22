@@ -96,7 +96,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
         }
     }
     
-    func checkParticipant(participantRecordName: String) {
+    func finishResponse(participantRecordName: String) {
         let recordID = CKRecordID(recordName: participantRecordName)
         
         publicData.fetch(withRecordID: recordID, completionHandler: { (record:CKRecord?, error:Error?) in
@@ -147,6 +147,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         DispatchQueue.main.async {
                             self.deleteParticipants()
                             self.deleteTutors()
+                            self.deleteRequests()
                             self.performSegue(withIdentifier: "toSessionStatisticsView", sender: self)
                         }
                     } else if let e = saveError {
@@ -157,6 +158,24 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 print(e.localizedDescription)
             }
         })
+    }
+    
+    func deleteRequests() {
+        let query = CKQuery(recordType: "Request", predicate: NSPredicate(format: "%K == %@", argumentArray: ["SessionID", sessionID]))
+        
+        publicData.perform(query, inZoneWith: nil) { (results:[CKRecord]?, error:Error?) in
+            if let requests = results {
+                for request in requests {
+                    self.publicData.delete(withRecordID: request.recordID, completionHandler: { (record:CKRecordID?, error:Error?) in
+                        if error == nil {
+                            print("Record Successfully Deleted Request")
+                        } else if let e = error {
+                            print(e.localizedDescription)
+                        }
+                    })
+                }
+            }
+        }
     }
     
     func deleteParticipants() {
@@ -500,7 +519,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                         self.present(timeAlert, animated: true, completion: nil)
                         
                         let recordName = participantRecordID.recordName
-                        self.checkParticipant(participantRecordName: recordName)
+                        self.finishResponse(participantRecordName: recordName)
                         DispatchQueue.main.async(execute: {
                             self.loadData()
                         })

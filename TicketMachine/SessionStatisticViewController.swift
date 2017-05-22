@@ -124,9 +124,6 @@ class SessionStatisticViewController: UITableViewController {
     func respondArrayStrings() -> String {
         var respondString = ""
         
-//        for string in responseTimes {
-//            respondString += "\n " + string
-//        }
         for i in 1 ... responseTimes.count {
             respondString += "\n (" + String(i) + ") " + responseTimes[i-1]
         }
@@ -139,9 +136,6 @@ class SessionStatisticViewController: UITableViewController {
     func waitArrayStrings() -> String {
         var waitString = ""
         
-//        for string in waitTimes {
-//            waitString += "\n " + string
-//        }
         for i in 1 ... waitTimes.count {
             waitString += "\n (" + String(i) + ") " + waitTimes[i-1]
         }
