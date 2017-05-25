@@ -16,10 +16,11 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     
     let publicData = CKContainer.default().publicCloudDatabase
 
+    var sessionAlert = UIAlertController()
     var username = String()
     var sessionNextID = Int()
     var sessions = [CKRecord]()
-    var refresh:UIRefreshControl!
+    var refresh = UIRefreshControl()
     var status = "open"
     let limit = 4
     
@@ -61,7 +62,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
     }
     
     func newSession() {
-        let sessionAlert = UIAlertController(title: "New Session", message: "Enter a Session Name \n and a \n 4 Digit Passcodes", preferredStyle: .alert)
+        sessionAlert = UIAlertController(title: "New Session", message: "Enter a Session Name \n and a \n 4 Digit Passcodes", preferredStyle: .alert)
         sessionAlert.addTextField { (nameField: UITextField) in
             nameField.placeholder = "Session Name"
         }
@@ -71,6 +72,7 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
             studentCodeField.delegate = self
             studentCodeField.addTarget(self, action: #selector(self.checkPasscodeLength(_:)), for: .editingChanged)
             studentCodeField.addTarget(self, action: #selector(self.textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+            studentCodeField.addTarget(self, action: #selector(self.alertTextFieldDidChange(_:)), for: .editingChanged)
         }
         sessionAlert.addTextField { (tutorCodeField: UITextField) in
             tutorCodeField.placeholder = "Session Passcode for Tutors"
@@ -78,14 +80,15 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
             tutorCodeField.delegate = self
             tutorCodeField.addTarget(self, action: #selector(self.checkPasscodeLength(_:)), for: .editingChanged)
             tutorCodeField.addTarget(self, action: #selector(self.textField(_:shouldChangeCharactersIn:replacementString:)), for: .editingChanged)
+            tutorCodeField.addTarget(self, action: #selector(self.alertTextFieldDidChange(_:)), for: .editingChanged)
         }
         
-        sessionAlert.addAction(UIAlertAction(title: "Create Session", style: .default, handler: { (action: UIAlertAction) in
-            let nameField = sessionAlert.textFields?[0]
-            let studentCodeField = sessionAlert.textFields?[1]
-            let tutorCodeField = sessionAlert.textFields?[2]
+        let createAction = UIAlertAction(title: "Create Session", style: .default) { (action: UIAlertAction) in
+            let nameField = self.sessionAlert.textFields?[0]
+            let studentCodeField = self.sessionAlert.textFields?[1]
+            let tutorCodeField = self.sessionAlert.textFields?[2]
             
-            if nameField?.text != "" && studentCodeField?.text != "" {
+            if nameField?.text != "" {
                 let newSession = CKRecord(recordType: "Session")
                 newSession["Name"] = nameField?.text as CKRecordValue?
                 newSession["StudentCode"] = Int((studentCodeField?.text!)!) as CKRecordValue?
@@ -108,17 +111,32 @@ class TutorTableViewController: UITableViewController, UNUserNotificationCenterD
             } else {
                 self.newSession()
             }
-        }))
+        }
+        
+        sessionAlert.addAction(createAction)
+        createAction.isEnabled = false
         
         sessionAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(sessionAlert, animated: true, completion: nil)
 
     }
     
+    func alertTextFieldDidChange(_ textField: UITextField){
+        let textField1: UITextField  = sessionAlert.textFields![1];
+        let textField2: UITextField  = sessionAlert.textFields![2];
+        let createAction: UIAlertAction = sessionAlert.actions[0];
+        if textField1.text?.characters.count == 4 && textField2.text?.characters.count == 4 {
+            createAction.isEnabled = true
+        } else {
+            createAction.isEnabled = false
+        }
+    }
     
     func checkPasscodeLength(_ textField: UITextField!) {
-        if (textField.text!.characters.count > 4) {
+        if textField.text!.characters.count > 4 {
             textField.deleteBackward()
+        } else if textField.text?.characters.count == 4 {
+            //createAction.isEnabled = sessionAlert.textFields?[1].text?.characters.count == 4
         }
     }
     

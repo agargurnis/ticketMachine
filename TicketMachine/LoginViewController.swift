@@ -38,7 +38,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if (recordID?.recordName) != nil {
                 // getting current user info
             } else {
-                print("Fetched iCloudID was nil")
+                self.alertSignIn()
+                DispatchQueue.main.async {
+                    self.mainButton.setTitle("Sign in your Apple ID to continue", for: .normal)
+                }
             }
         }
     }
@@ -118,6 +121,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         getLastId() {
             self.registerUser()
         }
+    }
+    
+    func alertSignIn() {
+        let signInAlert = UIAlertController(title: "Please sign in to your iPhone", message: "This can be done through your settings using your Apple ID", preferredStyle: .alert)
+        signInAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.present(signInAlert, animated: true, completion: nil)
     }
     
     func encryptPassword(myPassword: String) -> String {

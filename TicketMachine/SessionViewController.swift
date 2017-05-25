@@ -72,7 +72,8 @@ class SessionViewController: UIViewController {
             let subscription = CKQuerySubscription(recordType: "Participant", predicate: predicate, options: CKQuerySubscriptionOptions.firesOnRecordUpdate)
             
             let notificationInfo = CKNotificationInfo()
-            notificationInfo.shouldBadge = true
+            //notificationInfo.shouldBadge = true
+            notificationInfo.shouldSendContentAvailable = true
             subscription.notificationInfo = notificationInfo
             
             publicData.save(subscription) { (subscription:CKSubscription?, error:Error?) in
@@ -189,10 +190,12 @@ class SessionViewController: UIViewController {
                 if error == nil {
                     let theStatus = record?.object(forKey: "Status") as? String
                     
-                    if theStatus == "waiting" {
+                    if theStatus == "notWaiting" {
+                        self.notWaitingUI()
+                    } else if theStatus == "waiting" {
                         self.waitingUI()
                     } else {
-                        self.notWaitingUI()
+                        self.beingSeenUI()
                     }
                 } else if let e = error {
                     print(e.localizedDescription)
@@ -409,6 +412,17 @@ class SessionViewController: UIViewController {
             } else {
                 // no results
             }
+        }
+    }
+    
+    func beingSeenUI() {
+        DispatchQueue.main.async {
+            self.queueImg.image = UIImage(named: "queue")
+            self.setQueueLbl(people: 1, waiting: true)
+            self.helpBtn.isEnabled = false
+            self.helpImg.alpha = 0.2
+            self.withdrawBtn.isEnabled = true
+            self.withdrawImg.alpha = 1
         }
     }
     

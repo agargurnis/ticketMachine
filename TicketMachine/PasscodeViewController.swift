@@ -26,64 +26,34 @@ class PasscodeViewController: UIViewController {
     @IBOutlet weak var clearLbl: UIButton!
     
     @IBAction func btn1(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(1);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 1)
     }
     @IBAction func btn2(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(2);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 2)
     }
     @IBAction func btn3(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(3);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 3)
     }
     @IBAction func btn4(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(4);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 4)
     }
     @IBAction func btn5(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(5);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 5)
     }
     @IBAction func btn6(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(6);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 6)
     }
     @IBAction func btn7(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(7);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 7)
     }
     @IBAction func btn8(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(8);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 8)
     }
     @IBAction func btn9(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(9);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 9)
     }
     @IBAction func btn0(_ sender: Any) {
-        if(keypadPasswordArray.count != 4){
-            keypadPasswordArray.append(0);
-        }
-        passwordFieldChecker()
+        keypadPaswordPressed(number: 0)
     }
     @IBAction func okBtn(_ sender: Any) {
         var passString = ""
@@ -109,6 +79,13 @@ class PasscodeViewController: UIViewController {
         passwordLbl.text = ""
         clearLbl.isEnabled = false
         okLbl.isEnabled = false
+    }
+    
+    func keypadPaswordPressed(number: Int) {
+        if(keypadPasswordArray.count != 4){
+            keypadPasswordArray.append(number);
+        }
+        passwordFieldChecker()
     }
     
     func passwordFieldChecker(){

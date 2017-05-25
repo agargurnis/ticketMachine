@@ -115,8 +115,13 @@ class SessionStatisticViewController: UITableViewController {
         let stringNoWithdraws = String(noWithdraws)
         let stringNoResponses = String(noResponses)
         
-        theString = "In this session there were " + stringNoTutors + " tutors and " + stringNoParticipants + " participants. "
-        + "There were " + stringNoHelpRequests + " help requests and " + stringNoResponses + " of them got successfully responded to by the tutor but " + stringNoWithdraws + " were withdrawn."
+        if noTutors == 1 {
+            theString = "In the session: " + sessionName + " there was " + stringNoTutors + " tutor and " + stringNoParticipants + " participants. "
+                + "There were " + stringNoHelpRequests + " help requests, " + stringNoResponses + " of them got successfully responded to by the tutor but " + stringNoWithdraws + " were withdrawn."
+        } else {
+            theString = "In this session: " + sessionName + " there were " + stringNoTutors + " tutors and " + stringNoParticipants + " participants. "
+                + "There were " + stringNoHelpRequests + " help requests, " + stringNoResponses + " of them got successfully responded to by the tutor but " + stringNoWithdraws + " were withdrawn."
+        }
         
         return theString
     }
@@ -128,7 +133,7 @@ class SessionStatisticViewController: UITableViewController {
             respondString += "\n (" + String(i) + ") " + responseTimes[i-1]
         }
         
-        let theString = "\n The following times show how quickly the tutor managed to answer the help request: " + respondString
+        let theString = "\n The following times show how quickly the tutor managed to answer the help requests: " + respondString
         
         return theString
     }
@@ -148,6 +153,7 @@ class SessionStatisticViewController: UITableViewController {
     @IBAction func shareStatistics(_ sender: Any) {
         let activityController = UIActivityViewController(activityItems: [buildStatisticalString(), waitArrayStrings(), respondArrayStrings()], applicationActivities: nil)
         
+        activityController.excludedActivityTypes = [UIActivityType.airDrop]
         activityController.popoverPresentationController?.sourceView = self.view
         self.present(activityController, animated: true, completion: nil)
     }
@@ -192,7 +198,7 @@ class SessionStatisticViewController: UITableViewController {
         } else if section == 5 {
             return "Time the participant had to wait"
         } else {
-            return "Time the tutor took whilst responding"
+            return "Time the tutor spent with the participant"
         }
     }
     
@@ -200,56 +206,32 @@ class SessionStatisticViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "statCell", for: indexPath)
         
         if indexPath.section == 0 {
-            if noTutors == 1 {
-                //cell.textLabel?.text = "There was " + String(noTutors) + " tutor in this session"
-                cell.textLabel?.text = String(noTutors)
-            } else {
-                //cell.textLabel?.text = "There was " + String(noTutors) + " tutors in this session"
-                cell.textLabel?.text = String(noTutors)
-            }
+            
+            cell.textLabel?.text = String(noTutors)
+
             return cell
             
         } else if indexPath.section == 1 {
-            if noParticipants == 1 {
-                //cell.textLabel?.text = "There was " + String(noParticipants) + " participant in this session"
-                cell.textLabel?.text = String(noParticipants)
-            } else {
-                //cell.textLabel?.text = "There was " + String(noParticipants) + " participants in this session"
-                cell.textLabel?.text = String(noParticipants)
-            }
+            
+            cell.textLabel?.text = String(noParticipants)
             
             return cell
             
         } else if indexPath.section == 2 {
-            if noHelpRequests == 1 {
-                //cell.textLabel?.text = String(noHelpRequests) + " time help was requested in this session"
-                cell.textLabel?.text = String(noHelpRequests)
-            } else {
-                //cell.textLabel?.text = String(noHelpRequests) + " times help was requested in this session"
-                cell.textLabel?.text = String(noHelpRequests)
-            }
+
+            cell.textLabel?.text = String(noHelpRequests)
             
             return cell
             
         } else if indexPath.section == 3 {
-            if noResponses == 1 {
-                //cell.textLabel?.text = String(noResponses) + " help request got successfully answered"
-                cell.textLabel?.text = String(noResponses)
-            } else {
-                //cell.textLabel?.text = String(noResponses) + " help requests got successfully answered"
-                cell.textLabel?.text = String(noResponses)
-            }
+            
+            cell.textLabel?.text = String(noResponses)
             
             return cell
             
         } else if indexPath.section == 4 {
-            if noWithdraws == 1 {
-                //cell.textLabel?.text = String(noWithdraws) + " help request got withdrawn"
-                cell.textLabel?.text = String(noWithdraws) 
-            } else {
-                //cell.textLabel?.text = String(noWithdraws) + " help requests got withdrawn"
-                cell.textLabel?.text = String(noWithdraws)
-            }
+
+            cell.textLabel?.text = String(noWithdraws)
             
             return cell
             
