@@ -19,6 +19,8 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     var sessionName = String()
     var username = String()
     var tutorRecordName = String()
+    var responseStarted = false
+    var participantBS: CKRecordID!
     
     var tutorRecord: CKRecord!
     var tutors = [CKRecord]()
@@ -333,7 +335,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     }
     
     func startResponse( done : @escaping DONE ) {
-        
+    
         let recordID = CKRecordID(recordName: tutorRecordName)
         let now = Date()
         
@@ -345,6 +347,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully added response time!")
+                        self.responseStarted = true
                         done()
                     } else if let e = saveError {
                         print(e.localizedDescription)
@@ -387,6 +390,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 self.publicData.save(record!, completionHandler: { (savedRecord:CKRecord?, saveError:Error?) in
                     if saveError == nil {
                         print("Successfully updated record!")
+                        self.responseStarted = false
                         self.addNoResponses()
                         done()
                     } else if let e = saveError {
@@ -569,7 +573,7 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         if tutorRecordName != "" {
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && self.participantsBeingSeen[indexPath.row].object(forKey: "recordID") as? CKRecordID == self.participantBS {
                 let finishAction = UITableViewRowAction.init(style: .normal, title: "Finish") { (action:UITableViewRowAction, indexPath:IndexPath) in
                     
                     if self.participantsBeingSeen.count != 0 {
@@ -602,12 +606,13 @@ class SessionManagementViewController: UITableViewController, UIGestureRecognize
                 finishAction.backgroundColor = UIColor(red:9/255, green:154/255, blue:77/255, alpha:1)
                 return [finishAction]
                 
-            } else if indexPath.section == 1 {
+            } else if indexPath.section == 1 && responseStarted == false {
                 let startAction = UITableViewRowAction.init(style: .normal, title: "Start") { (action:UITableViewRowAction, indexPath:IndexPath) in
                     
                     if self.participantsWaiting.count != 0 {
                         let selectedParticipant = self.participantsWaiting[indexPath.row]
                         let participantRecordID = selectedParticipant["recordID"] as! CKRecordID
+                        self.participantBS = participantRecordID
                         let checkTime = selectedParticipant["WaitTime"] as? Date
                         let now = Date()
                         
